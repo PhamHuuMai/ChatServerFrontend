@@ -1,9 +1,9 @@
-var app = angular.module('app', []);
 
+var app = angular.module('app', []);
 app.factory('socket', ['$q', function($q) {
-    
+    // https://chatserver-maiph.herokuapp.com/
     var Service = {};
-    var ws = new WebSocket("ws://localhost:1997/user");
+    var ws = new WebSocket("ws://chatserver-maiph.herokuapp.com/user");
     var listeners = [];
     ws.onopen = function(){  
         console.log("Socket has been opened!");  
@@ -30,22 +30,6 @@ app.factory('socket', ['$q', function($q) {
 
     return Service;
 }])
-app.controller('leftBarCtl',['socket','$scope',function(socket,$scope) {
-    $scope.text1 = "eee";
-    console.log("chay qua day");
-    socket.addListener(function(aaa){
-        console.log("===================================");
-        console.log(aaa);
-        $scope.text1 = "eee";
-        $scope.text1 = aaa;
-    });
-    $scope.search = function(){
-        socket.send($scope.text);
-    };
 
-}]);
 
-app.controller('contentCtl', function($scope) {
-    $scope.firstName = "John";
-    $scope.lastName = "Doe";
-});
+
