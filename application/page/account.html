@@ -1,0 +1,67 @@
+<div class="container" style="background-image: url(img/back.jpg) ; min-height: 400px" ng-controller="accountCtl">
+    <div class="jumbotron" >
+            <h1>Private</h1> 
+            <p>Chat chat chat</p> 
+    </div>
+    <div class="col-sm-9" >
+        <ul class="nav nav-tabs">
+            <li>
+                <a class="active btn btn-info" data-toggle="tab" ng-click="tab(1)" ng-disabled="!tabflag">Login</a>
+            </li>
+            <li>
+                <a class="btn btn-success" data-toggle="tab" ng-click="tab(2)" ng-disabled="tabflag">register</a>
+            </li>
+        </ul>
+
+        <div  ng-hide="tabflag">
+            <br>
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <i class="glyphicon glyphicon-user"></i>
+                </span>
+                <input type="text" class="form-control" ng-model="email" placeholder="Email">
+            </div>
+            <br>
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <i class="glyphicon glyphicon-lock"></i>
+                </span>
+                <input type="password" class="form-control" ng-model="password" placeholder="Password">
+            </div>
+            <br>
+            <div class="input-group">
+                <button type="button" class="btn btn-default btn-block" ng-click="login()">Login</button>
+            </div>
+            <br>
+        </div>
+        <div ng-show="tabflag">
+            <br>
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <i class="glyphicon glyphicon-user"></i>
+                </span>
+                <input id="email" type="text" class="form-control" ng-model="emailReg" placeholder="Email">
+            </div>
+            <br>
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <i class="glyphicon glyphicon-lock"></i>
+                </span>
+                <input type="password" class="form-control" ng-model="passwordReg" placeholder="Password">
+            </div>
+            <br>
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <i class="glyphicon glyphicon-lock"></i>
+                </span>
+                <input type="password" class="form-control" ng-model="passwordCfr" placeholder="Confirm password">
+            </div>
+            <br>
+            <div class="input-group">
+                <button type="button" class="btn btn-default btn-block" ng-click="register()">Register</button>
+            </div>
+            <br>
+        </div>
+
+    </div>
+</div>
