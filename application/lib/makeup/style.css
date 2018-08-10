@@ -139,7 +139,7 @@
 }
 .message_section {
   border: 1px solid #dddddd;
-  background-color: chartreuse;
+
 }
 .chat_area {
   float: left;
@@ -160,7 +160,7 @@
 }
 .chat-body1 p {
   background: #fbf9fa none repeat scroll 0 0;
-  background-color: #00ff73;
+
   padding: 10px;
 }
 .chat_area .admin_chat .chat-body1 {
@@ -198,3 +198,10 @@
   color: #fff;
   cursor:pointer;
 }
+
+body {
+  padding-top: 90px;
+}
+
+
+
