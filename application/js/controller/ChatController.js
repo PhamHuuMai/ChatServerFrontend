@@ -1,5 +1,10 @@
 app.controller('chatCtl',['socket','$scope',function(socket,$scope) {
-    console.log("chay qua day");
+    if(window.sessionStorage.getItem('token') == null){
+        window.location = '/';
+    }
+    var user = window.sessionStorage.getItem('user')
+    $scope.user = ' ~ '+user;
+    console.log($scope.user);
     socket.addListener(function(aaa){
         console.log("===================================");
         console.log(aaa);

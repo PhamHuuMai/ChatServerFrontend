@@ -1,7 +1,7 @@
 app.factory('socket', ['$q', function($q) {
     // https://chatserver-maiph.herokuapp.com/
     var Service = {};
-    var ws = new WebSocket("ws://chatserver-maiph.herokuapp.com/user");
+    var ws = new WebSocket("ws://chatserver-maiph.herokuapp.com/chat");
     var listeners = [];
     ws.onopen = function(){  
         console.log("Socket has been opened!");  

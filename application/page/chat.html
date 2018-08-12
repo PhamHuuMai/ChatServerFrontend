@@ -1,6 +1,7 @@
+<div ng-controller="chatCtl">
     <!-- Warning dialog -->
-    <div></div>
-    <div class="chat_container" ng-controller="chatCtl">
+    <div class="well well-lg">Xin chào <strong>{{user}}</strong></div>
+    <div class="chat_container" >
         <!--chat_sidebar-->
         <div class="col-sm-3 chat_sidebar" ng-init="loadConversation()" >
             <div class="row" >
@@ -25,183 +26,15 @@
                                 <li>
                                     <a href="#"> All Conversation </a>
                                 </li>
-                                <li>
-                                    <a href="#">Another action</a>
-                                </li>
-                                <li>
-                                    <a href="#">Something else here</a>
-                                </li>
-                                <li>
-                                    <a href="#">Separated link</a>
-                                </li>
                             </ul>
                         </li>
                         <li>
                             <a href="#">Another action</a>
                         </li>
-                        <li>
-                            <a href="#">Something else here</a>
-                        </li>
-                        <li>
-                            <a href="#">Separated link</a>
-                        </li>
                     </ul>
                 </div>
                 <div class="member_list">
                     <ul class="list-unstyled">
-                        <li class="left clearfix">
-                            <span class="chat-img pull-left">
-                                <img src="https://lh6.googleusercontent.com/-y-MY2satK-E/AAAAAAAAAAI/AAAAAAAAAJU/ER_hFddBheQ/photo.jpg" alt="User Avatar"
-                                    class="img-circle">
-                            </span>
-                            <div class="chat-body clearfix">
-                                <div class="header_sec">
-                                    <strong class="primary-font">Jack Sparrow</strong>
-                                    <strong class="pull-right">
-                                        09:45AM</strong>
-                                </div>
-                                <div class="contact_sec">
-                                    <strong class="primary-font">(123) 123-456</strong>
-                                    <span class="badge pull-right">3</span>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="left clearfix">
-                            <span class="chat-img pull-left">
-                                <img src="https://lh6.googleusercontent.com/-y-MY2satK-E/AAAAAAAAAAI/AAAAAAAAAJU/ER_hFddBheQ/photo.jpg" alt="User Avatar"
-                                    class="img-circle">
-                            </span>
-                            <div class="chat-body clearfix">
-                                <div class="header_sec">
-                                    <strong class="primary-font">Jack Sparrow</strong>
-                                    <strong class="pull-right ">
-                                        09:45AM</strong>
-                                </div>
-                                <div class="contact_sec">
-                                    <strong class="primary-font">(123) 123-456</strong>
-                                    <span class="badge pull-right">3</span>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="left clearfix">
-                            <span class="chat-img pull-left">
-                                <img src="https://lh6.googleusercontent.com/-y-MY2satK-E/AAAAAAAAAAI/AAAAAAAAAJU/ER_hFddBheQ/photo.jpg" alt="User Avatar"
-                                    class="img-circle">
-                            </span>
-                            <div class="chat-body clearfix">
-                                <div class="header_sec">
-                                    <strong class="primary-font">Jack Sparrow</strong>
-                                    <strong class="pull-right">
-                                        09:45AM</strong>
-                                </div>
-                                <div class="contact_sec">
-                                    <strong class="primary-font">(123) 123-456</strong>
-                                    <span class="badge pull-right">3</span>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="left clearfix">
-                            <span class="chat-img pull-left">
-                                <img src="https://lh6.googleusercontent.com/-y-MY2satK-E/AAAAAAAAAAI/AAAAAAAAAJU/ER_hFddBheQ/photo.jpg" alt="User Avatar"
-                                    class="img-circle">
-                            </span>
-                            <div class="chat-body clearfix">
-                                <div class="header_sec">
-                                    <strong class="primary-font">Jack Sparrow</strong>
-                                    <strong class="pull-right">
-                                        09:45AM</strong>
-                                </div>
-                                <div class="contact_sec">
-                                    <strong class="primary-font">(123) 123-456</strong>
-                                    <span class="badge pull-right">3</span>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="left clearfix">
-                            <span class="chat-img pull-left">
-                                <img src="https://lh6.googleusercontent.com/-y-MY2satK-E/AAAAAAAAAAI/AAAAAAAAAJU/ER_hFddBheQ/photo.jpg" alt="User Avatar"
-                                    class="img-circle">
-                            </span>
-                            <div class="chat-body clearfix">
-                                <div class="header_sec">
-                                    <strong class="primary-font">Jack Sparrow</strong>
-                                    <strong class="pull-right">
-                                        09:45AM</strong>
-                                </div>
-                                <div class="contact_sec">
-                                    <strong class="primary-font">(123) 123-456</strong>
-                                    <span class="badge pull-right">3</span>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="left clearfix">
-                            <span class="chat-img pull-left">
-                                <img src="https://lh6.googleusercontent.com/-y-MY2satK-E/AAAAAAAAAAI/AAAAAAAAAJU/ER_hFddBheQ/photo.jpg" alt="User Avatar"
-                                    class="img-circle">
-                            </span>
-                            <div class="chat-body clearfix">
-                                <div class="header_sec">
-                                    <strong class="primary-font">Jack Sparrow</strong>
-                                    <strong class="pull-right">
-                                        09:45AM</strong>
-                                </div>
-                                <div class="contact_sec">
-                                    <strong class="primary-font">(123) 123-456</strong>
-                                    <span class="badge pull-right">3</span>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="left clearfix">
-                            <span class="chat-img pull-left">
-                                <img src="https://lh6.googleusercontent.com/-y-MY2satK-E/AAAAAAAAAAI/AAAAAAAAAJU/ER_hFddBheQ/photo.jpg" alt="User Avatar"
-                                    class="img-circle">
-                            </span>
-                            <div class="chat-body clearfix">
-                                <div class="header_sec">
-                                    <strong class="primary-font">Jack Sparrow</strong>
-                                    <strong class="pull-right">
-                                        09:45AM</strong>
-                                </div>
-                                <div class="contact_sec">
-                                    <strong class="primary-font">(123) 123-456</strong>
-                                    <span class="badge pull-right">3</span>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="left clearfix">
-                            <span class="chat-img pull-left">
-                                <img src="https://lh6.googleusercontent.com/-y-MY2satK-E/AAAAAAAAAAI/AAAAAAAAAJU/ER_hFddBheQ/photo.jpg" alt="User Avatar"
-                                    class="img-circle">
-                            </span>
-                            <div class="chat-body clearfix">
-                                <div class="header_sec">
-                                    <strong class="primary-font">Jack Sparrow</strong>
-                                    <strong class="pull-right">
-                                        09:45AM</strong>
-                                </div>
-                                <div class="contact_sec">
-                                    <strong class="primary-font">(123) 123-456</strong>
-                                    <span class="badge pull-right">3</span>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="left clearfix">
-                            <span class="chat-img pull-left">
-                                <img src="https://lh6.googleusercontent.com/-y-MY2satK-E/AAAAAAAAAAI/AAAAAAAAAJU/ER_hFddBheQ/photo.jpg" alt="User Avatar"
-                                    class="img-circle">
-                            </span>
-                            <div class="chat-body clearfix">
-                                <div class="header_sec">
-                                    <strong class="primary-font">Jack Sparrow</strong>
-                                    <strong class="pull-right">
-                                        09:45AM</strong>
-                                </div>
-                                <div class="contact_sec">
-                                    <strong class="primary-font">(123) 123-456</strong>
-                                    <span class="badge pull-right">3</span>
-                                </div>
-                            </div>
-                        </li>
                         <li class="left clearfix">
                             <span class="chat-img pull-left">
                                 <img src="https://lh6.googleusercontent.com/-y-MY2satK-E/AAAAAAAAAAI/AAAAAAAAAJU/ER_hFddBheQ/photo.jpg" alt="User Avatar"
@@ -341,3 +174,4 @@
     </div>
     <!-- footer -->
     <div></div>
+</div>
