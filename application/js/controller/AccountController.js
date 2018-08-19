@@ -23,9 +23,9 @@ app.controller('accountCtl', ['$scope', 'communicate', 'md5', function ($scope, 
             },
             function (responseData) {
                 alertMsg('success', 'OK');
-                console.log(responseData);
                 window.sessionStorage.setItem('token',responseData.token);
                 window.sessionStorage.setItem('user',responseData.email);
+                window.sessionStorage.setItem('user_id',responseData.userId);
                 window.location = '/#!/chat';
             }, function (errorCode) {
                 alertMsg('danger', 'Incorrect email or password');
@@ -38,14 +38,15 @@ app.controller('accountCtl', ['$scope', 'communicate', 'md5', function ($scope, 
         communicate.post(
             "/register",
             {
+                name: $scope.name,
                 email: $scope.emailReg,
                 password: $scope.passwordReg
             },
             function (responseData) {
                 alertMsg('success', 'OK');
-                console.log(responseData);
                 window.sessionStorage.setItem('token',responseData.token);
                 window.sessionStorage.setItem('user',responseData.email);
+                window.sessionStorage.setItem('user_id',responseData.userId);
                 window.location = '/#!/chat';
             }, function (errorCode) {
                 if (errorCode == -1)
@@ -54,7 +55,6 @@ app.controller('accountCtl', ['$scope', 'communicate', 'md5', function ($scope, 
                     alertMsg('danger', 'Server error.');
                 if (errorCode == 3)
                     alertMsg('danger', 'Email exist.');
-                console.log(errorCode);
             });
     };
 
