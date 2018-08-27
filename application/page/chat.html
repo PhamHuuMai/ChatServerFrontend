@@ -1,11 +1,15 @@
-<div ng-controller="chatCtl" >
+<div ng-controller="chatCtl">
+    <div class="alert alert-danger" ng-show="disconected">
+        <strong> Mất kết nối internet ... Cố gắng thử lại sau 5s</strong>
+    </div>
     <!-- Warning dialog -->
-    <div class="well well-lg" >Xin chào
+    <div class="well well-lg">Xin chào
         <strong>{{user}}</strong>
         <span class="chat-img pull-left">
             <img src="https://lh6.googleusercontent.com/-y-MY2satK-E/AAAAAAAAAAI/AAAAAAAAAJU/ER_hFddBheQ/photo.jpg" alt="User Avatar"
                 class="img-circle">
         </span>
+        <button type="button" class="badge pull-right">Logout</button>
     </div>
     <div class="chat_container">
         <!--chat_sidebar-->
@@ -27,7 +31,7 @@
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
                         <li>
-                            <a href="" ng-click="loadConversation()"> All Conversation </a>
+                            <a href="" ng-click="loadConversation()"> Tất cả cuộc hội thoại </a>
                             <!-- <ul class="sub_menu_ list-unstyled">
                                 <li>
                                     <a href="#"> All Conversation </a>
@@ -35,7 +39,7 @@
                             </ul> -->
                         </li>
                         <li>
-                            <a href="" ng-click="loadAllContact()">All Contact</a>
+                            <a href="" ng-click="loadAllContact()">Tất cả người dùng </a>
                         </li>
                     </ul>
                 </div>
@@ -54,7 +58,9 @@
                                 </div>
                                 <div class="contact_sec">
                                     <strong class="primary-font"></strong>
-                                    <h3><span class="badge pull-right" ng-click="connect(x.id)">+</span></h3>
+                                    <h3>
+                                        <span class="badge pull-right" ng-click="connect(x.id)">+</span>
+                                    </h3>
                                 </div>
                             </div>
                         </li>
@@ -62,7 +68,7 @@
                 </div>
                 <div class="member_list" ng-show="conversationTab">
                     <ul class="list-unstyled">
-                        <li class="left clearfix" ng-repeat="y in conversations" >
+                        <li class="left clearfix" ng-repeat="y in conversations">
                             <span class="chat-img pull-left">
                                 <img src="https://lh6.googleusercontent.com/-y-MY2satK-E/AAAAAAAAAAI/AAAAAAAAAJU/ER_hFddBheQ/photo.jpg" alt="User Avatar"
                                     class="img-circle">
@@ -74,8 +80,10 @@
                                         {{y.lastTimeAction}}</strong>
                                 </div>
                                 <div class="contact_sec">
-                                    <strong class="primary-font">{{y.lastChat}}</strong>
-                                    <h3><span class="badge pull-right" >{{y.numUnread}}</span></h3>
+                                    <strong class="primary-font" style="font-weight: 300">{{y.lastChat}}</strong>
+                                    <h2>
+                                        <span class="badge pull-right">{{y.numUnread}}</span>
+                                    </h3>
                                 </div>
                             </div>
                         </li>
@@ -90,9 +98,32 @@
             <div class="row" ng-show="isChatting">
                 <div class="new_message_head">
                     <div class="pull-left">
-                        <h3>{{conversationName}}</h3> 
-                        <button>
-                            <i class="fa fa-plus-square-o" aria-hidden="true"></i> New Message</button>   
+                        <h3>{{conversationName}}</h3>
+                        <button ng-click="addMember()"><i class="fa fa-plus-square-o" aria-hidden="true"></i> Thêm thành viên </button>
+                        <div class="animate-div member_area" ng-show="showMember">                            
+                            <span class="badge pull-left" style="margin: 10px">Mai1 dddddddddddddddddddddddddddddddddddddddddddddd</span>
+                            <span class="badge pull-left" style="margin: 10px">Mai1 dddddddddddddddddddddddddddddddddddddddddddddd</span>
+                            <span class="badge pull-left" style="margin: 10px">Mai1 dddddddddddddddddddddddddddddddddddddddddddddd</span>
+                            <span class="badge pull-left" style="margin: 10px">Mai1 dddddddddddddddddddddddddddddddddddddddddddddd</span>
+                            <span class="badge pull-left" style="margin: 10px">Mai1 dddddddddddddddddddddddddddddddddddddddddddddd</span>
+                            <span class="badge pull-left" style="margin: 10px">Mai1 dddddddddddddddddddddddddddddddddddddddddddddd</span>
+                            <span class="badge pull-left" style="margin: 10px">Mai1 dddddddddddddddddddddddddddddddddddddddddddddd</span>
+                            <span class="badge pull-left" style="margin: 10px">Mai1 dddddddddddddddddddddddddddddddddddddddddddddd</span>
+                            <span class="badge pull-left" style="margin: 10px">Mai1 dddddddddddddddddddddddddddddddddddddddddddddd</span>
+                            <span class="badge pull-left" style="margin: 10px">Mai1 dddddddddddddddddddddddddddddddddddddddddddddd</span>
+                            <span class="badge pull-left" style="margin: 10px">Mai1 dddddddddddddddddddddddddddddddddddddddddddddd</span>
+                            <span class="badge pull-left" style="margin: 10px">Mai1 dddddddddddddddddddddddddddddddddddddddddddddd</span>
+                            <span class="badge pull-left" style="margin: 10px">Mai1 dddddddddddddddddddddddddddddddddddddddddddddd</span>
+                            <span class="badge pull-left" style="margin: 10px">Mai1 dddddddddddddddddddddddddddddddddddddddddddddd</span>
+                            <span class="badge pull-left" style="margin: 10px">Mai1 dddddddddddddddddddddddddddddddddddddddddddddd</span>
+                            <span class="badge pull-left" style="margin: 10px">Mai1 dddddddddddddddddddddddddddddddddddddddddddddd</span>
+                            <span class="badge pull-left" style="margin: 10px">Mai1 dddddddddddddddddddddddddddddddddddddddddddddd</span>
+                            <span class="badge pull-left" style="margin: 10px">Mai1 dddddddddddddddddddddddddddddddddddddddddddddd</span>
+                            <span class="badge pull-left" style="margin: 10px">Mai1 dddddddddddddddddddddddddddddddddddddddddddddd</span>
+                            <span class="badge pull-left" style="margin: 10px">Mai1 dddddddddddddddddddddddddddddddddddddddddddddd</span>
+                            <span class="badge pull-left" style="margin: 10px">Mai1 dddddddddddddddddddddddddddddddddddddddddddddd</span>
+                            <span class="badge pull-left" style="margin: 10px">Mai1 dddddddddddddddddddddddddddddddddddddddddddddd</span>
+                        </div>    
                     </div>
                     <div class="pull-right">
                         <div class="dropdown">
@@ -111,46 +142,59 @@
                 <!--new_message_head-->
 
                 <div id="chat_area" class="chat_area">
+                    <button type="button" class="label label-warning" ng-click="loadMore()" ng-hide="isEnd"> thêm </button>
                     <ul class="list-unstyled">
-                        <li class="left clearfix {{x.isMe ? 'admin_chat' :'' }} " ng-repeat="x in messages" > 
+                        <li class="left clearfix {{x.isMe ? 'admin_chat' :'' }} " ng-repeat="x in messages">
+                            <strong class="chat_time {{x.isMe ? 'pull-right' :'pull-left' }}"> {{x.name}}</strong>
+                            <br>
                             <span class="chat-img1 {{x.isMe ? 'pull-right' :'pull-left' }}">
                                 <img src="https://lh6.googleusercontent.com/-y-MY2satK-E/AAAAAAAAAAI/AAAAAAAAAJU/ER_hFddBheQ/photo.jpg" alt="User Avatar"
                                     class="img-circle">
                             </span>
                             <div class="chat-body1 clearfix">
-                                <p>{{x.value}}</p>
-                                <div class="chat_time {{!x.isMe ? 'pull-right' :'pull-left' }}">{{x.time}}</div>
+                                <p class="img-rounded">{{x.value}}</p>
+                                <div class="badge chat_time {{!x.isMe ? 'pull-right' :'pull-left' }}">
+                                    <strong>{{x.time}}</strong>
+                                </div>
                             </div>
-                            {{x.$index}}
                         </li>
-                        <!-- <li class="left clearfix admin_chat">
-                            <span class="chat-img1 {{!x.isMe ? 'pull-right' :'pull-left' }}">
-                                <img src="https://lh6.googleusercontent.com/-y-MY2satK-E/AAAAAAAAAAI/AAAAAAAAAJU/ER_hFddBheQ/photo.jpg" alt="User Avatar"
-                                    class="img-circle">
-                            </span>
-                            <div class="chat-body1 clearfix">
-                                <p></p>
-                                <div class="chat_time pull-left">09:40PM</div>
-                            </div>
-                        </li> -->
                     </ul>
+                </div>
+                <div class="spinner" ng-show="type">
+                    <div class="bounce1"></div>
+                    <div class="bounce2"></div>
+                    <div class="bounce3"></div>
+                    <strong> đang gõ </strong>
                 </div>
                 <!--chat_area-->
                 <div class="message_write">
-                    <textarea class="form-control" ng-model="message" placeholder="type a message"></textarea>
+                    <textarea class="form-control" ng-model="message" ng-focus="typing()" placeholder="Viết tin nhắn vào đây"></textarea>
                     <div class="clearfix"></div>
                     <div class="chat_bottom">
                         <!-- <a href="#" class="pull-left upload_btn">
                             <i class="fa fa-cloud-upload" aria-hidden="true"></i>
                             Add Files</a> -->
                         <button ng-click="send()" class="pull-right btn btn-success">
-                            Send</button>
+                            Gửi</button>
                     </div>
                 </div>
             </div>
         </div>
         <!--end message_section-->
     </div>
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <strong>Disconected ...... </strong>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- footer -->
-    <div></div>
+
+</div>
+<br>
+<div class="alert ">
+    <strong> Một sản phẩm của Phạm Hữu Mai - CNTT 13C - MTA ~ "Cấm sao chép dưới mọi hình thức"</strong>
 </div>

@@ -4,6 +4,11 @@ app.factory('socket', ['$q', function($q) {
     Service.state = 0;
     ws = new WebSocket(socketChatHost);
     var listeners = [];
+    var onClose ;
+    var ping = function ping(){
+        console.log("ping");
+        ws.send('{"msg_type":-1}');
+    }
     ws.onopen = function(){
         Service.state = 1;  
         console.log("Socket has been opened!");
@@ -23,14 +28,20 @@ app.factory('socket', ['$q', function($q) {
     };
     ws.onclose = function(message) {
         console.log("close");
+        onClose();
+        console.log(ws);
     };
     function sendRequest(request) {
       console.log('Sending request', request);
       ws.send(request);
     };
 
+    window.setInterval(ping, 4500);
     Service.send = function(text) { 
         return sendRequest(text);
+    };
+    Service.close = function(closeAction) { 
+        onClose = closeAction;
     };
     Service.addListener = function(listener){
         listeners.push(listener);

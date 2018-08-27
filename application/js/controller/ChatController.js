@@ -1,13 +1,20 @@
 var temp = {
-    curent_conversation: ""
-
+    curent_conversation: "",
+    skip: 0,
+    take: 10
 };
 
 app.controller('chatCtl', ['socket', '$scope', 'communicate', function (socket, $scope, communicate) {
     if (window.sessionStorage.getItem('token') == null) {
         window.location = '/';
     }
+    var pageStatus = {
+
+    };
+    $scope.type = false;
+    $scope.disconected = false;
     $scope.tab = false;
+    $scope.isEnd = false;
     var user = window.sessionStorage.getItem('user');
     var userId = window.sessionStorage.getItem('user_id')
     $scope.user = ' ~ ' + user;
@@ -21,7 +28,7 @@ app.controller('chatCtl', ['socket', '$scope', 'communicate', function (socket, 
     };
 
     $scope.loadConversation = function () {
-        $scope.select = "All Conversation";
+        $scope.select = "Tất cả cuộc hội thoại";
         $scope.contactTab = false;
         $scope.conversationTab = true;
         $scope.conversations = [];
@@ -43,7 +50,7 @@ app.controller('chatCtl', ['socket', '$scope', 'communicate', function (socket, 
             });
     }
     $scope.loadAllContact = function () {
-        $scope.select = "All Contact";
+        $scope.select = "Tất cả người dùng";
         $scope.contactTab = true;
         $scope.conversationTab = false;
 
@@ -87,7 +94,13 @@ app.controller('chatCtl', ['socket', '$scope', 'communicate', function (socket, 
         $scope.message = "";
     }
 
+    $scope.addMember = function(){
+        $scope.showMember = !$scope.showMember;
+    }
     $scope.loadChatHistory = function (cvsId, cvsName) {
+        $scope.showMember = false;
+        temp.skip = 0;
+        $scope.isEnd = false;
         temp.curent_conversation = cvsId;
         // load 
         $scope.isChatting = true;
@@ -95,19 +108,28 @@ app.controller('chatCtl', ['socket', '$scope', 'communicate', function (socket, 
         $scope.messages = [];
         // getconversationcontent
         communicate.post(
-            "/getconversationcontent",
+            "/getconversationcontent/v2",
             {
-                cvsId: cvsId
+                cvsId: cvsId,
+                skip: 0,
+                take: temp.take
             },
             function (responseData) {
+                if(responseData.length < temp.take){
+                    $scope.isEnd = true;
+                    console.log("==================" + $scope.isEnd);
+                }
                 responseData.forEach(element => {
-                    $scope.messages.push({
+                    $scope.messages.unshift({
                         id: element.id,
                         isMe: element.userId == userId,
                         value: element.value,
-                        time: element.time
+                        time: element.time,
+                        name: element.name
                     });
+                    autoScroll();
                 });
+
             }, function (errorCode) {
                 console.log(errorCode);
             });
@@ -116,34 +138,97 @@ app.controller('chatCtl', ['socket', '$scope', 'communicate', function (socket, 
                 ele.numUnread = 0;
             }
         });
-        autoScroll();
+
+    }
+    $scope.loadMore = function () {
+        $scope.isEnd = false;
+        // load more
+        communicate.post(
+            "/getconversationcontent/v2",
+            {
+                cvsId: temp.curent_conversation,
+                skip: temp.skip + temp.take,
+                take: temp.take
+            },
+            function (responseData) {
+                $scope.isEnd = true;
+                responseData.forEach(element => {
+                    $scope.isEnd = false;
+                    $scope.messages.unshift({
+                        id: element.id,
+                        isMe: element.userId == userId,
+                        value: element.value,
+                        time: element.time,
+                        name: element.name
+                    });
+
+                });
+                temp.skip = temp.skip + temp.take;
+            }, function (errorCode) {
+                console.log(errorCode);
+            });
+    }
+    $scope.scrollTop = function () {
+        console.log("top");
+    }
+    $scope.typing = function () {
+        var msg = {
+            msg_type: 2,
+            to: temp.curent_conversation,
+            value: ""
+        };
+        socket.send(JSON.stringify(msg));
     }
     var recMsg = function (msg) {
+        console.log(msg);
         var msgObj = JSON.parse(msg);
-        var cvsId = msgObj.to;
-        var msgElement = {
-            isMe: msgObj.from == userId,
-            value: msgObj.value
+        var msgType = msgObj.msg_type;
+        if (msgType == 1) {
+            var cvsId = msgObj.to;
+            var msgElement = {
+                isMe: msgObj.from == userId,
+                value: msgObj.value,
+                name: msgObj.name,
+                time: 'now'
+            };
+            // tim 
+            $scope.conversations.forEach(ele => {
+                if (ele.id == cvsId) {
+                    if (msgObj.from != userId){
+                        ele.numUnread = ele.numUnread + 1;
+                    }
+                    ele.lastChat = msgObj.value;
+                }
+            });
+            //
+            $scope.messages.push(msgElement);
+            $scope.$apply();
+            autoScroll();
+        } else if (msgType == 2) {
+            $scope.type = true;
+            $scope.$apply();
+            var timer = setTimeout(function () {
+                $scope.type = false;
+                $scope.$apply();
+                clearTimeout(timer);
+            }, 8000);
 
-        };
-        // tim 
-        $scope.conversations.forEach(ele => {
-            if (ele.id == cvsId && msgObj.from != userId) {
-                ele.numUnread = ele.numUnread + 1;
-            }
-        });
-
-        //
-        $scope.messages.push(msgElement);
-        $scope.$apply();
-        autoScroll();
+        }
     };
     socket.addListener(recMsg);
-
+    var closeSocket = function () {
+        $scope.disconected = true;
+        console.log("======================================= close");
+        $('#myModal').modal('show');
+        $scope.$apply();
+        setTimeout(location.reload(), 5000);
+        // location.reload();
+    };
+    socket.close(closeSocket);
+    var autoScroll = function () {
+        // auto scroll bottom
+        console.log("auto scroll bottom");
+        const messages = document.getElementById('chat_area');
+        messages.scrollTop = messages.scrollHeight;
+    }
 }]);
-var autoScroll = function () {
-    // auto scroll bottom
-    console.log("auto scroll bottom");
-    const messages = document.getElementById('chat_area');
-    messages.scrollTop = messages.scrollHeight;
-}
