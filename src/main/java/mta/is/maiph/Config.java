@@ -1,11 +1,6 @@
 package mta.is.maiph;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -28,10 +23,10 @@ public class Config implements WebMvcConfigurer {
 //            System.out.println("Current relative path is: " + s);
         registry
                 .addResourceHandler("/**")
-                .addResourceLocations("file:///" + currentDir + "/application/");
+                .addResourceLocations("file:///" + currentDir + File.separatorChar + "application" + File.separatorChar);
         registry
                 .addResourceHandler("/file/**")
-                .addResourceLocations("file:///" + currentDir + "/file/");
+                .addResourceLocations("file:///" + currentDir + File.separatorChar + "file" + File.separatorChar);
 
     }
 }
