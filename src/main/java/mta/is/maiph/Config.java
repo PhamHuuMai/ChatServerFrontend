@@ -24,9 +24,9 @@ public class Config implements WebMvcConfigurer {
         registry
                 .addResourceHandler("/**")
                 .addResourceLocations("file:///" + currentDir + File.separatorChar + "application" + File.separatorChar);
-        registry
-                .addResourceHandler("/file/**")
-                .addResourceLocations("file:///" + currentDir + File.separatorChar + "file" + File.separatorChar);
+//        registry
+//                .addResourceHandler("/file/**")
+//                .addResourceLocations("file:///" + currentDir + File.separatorChar + "file" + File.separatorChar);
 
     }
 }

@@ -206,7 +206,7 @@ body {
 
 .animate-div {
   transition: all linear 0.5s;
-  background-color: lightblue;
+  background-color: #dff197;
   position: relative;
 }
 .ng-hide {
@@ -218,7 +218,7 @@ body {
 }
 .member_area {
   float: left;
-  height: 150px;
+  max-height: 150px;
   overflow-x: hidden;
   overflow-y: auto;
   width: 100%;

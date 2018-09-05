@@ -19,9 +19,10 @@ app.controller('chatCtl', ['socket', '$scope', 'communicate', function (socket, 
     var userId = window.sessionStorage.getItem('user_id')
     $scope.user = ' ~ ' + user;
     $scope.messages = [];
+    $scope.conversations = [];
     $scope.isChatting = false;
     $scope.conversationName = "";
-
+    $scope.lstContact = [];
     $scope.select = "";
     $scope.search = function () {
         // chua lam
@@ -93,11 +94,52 @@ app.controller('chatCtl', ['socket', '$scope', 'communicate', function (socket, 
         socket.send(JSON.stringify(msg));
         $scope.message = "";
     }
-
-    $scope.addMember = function(){
+    //
+    $scope.loadMember =function(){
+        communicate.post(
+            "/allmember",
+            {
+                cvsId : temp.curent_conversation
+            },
+            function (responseData) {
+                $scope.lstMembers = responseData
+            }, function (errorCode) {
+                console.log(errorCode);
+            });
         $scope.showMember = !$scope.showMember;
     }
+    //
+    //
+    $scope.add = function(index){
+        var element = $scope.lstContact[index];
+        communicate.post(
+            "/addmember",
+            {
+                cvsId : temp.curent_conversation,
+                memberId :element.userId
+            },
+            function (responseData) {
+                console.log(responseData);
+            }, function (errorCode) {
+                console.log(errorCode);
+            });
+
+        $scope.addMember();
+    }
+    $scope.addMember = function(){
+        communicate.post(
+            "/allfriend",
+            {},
+            function (responseData) {
+                $scope.lstContact = responseData
+            }, function (errorCode) {
+                console.log(errorCode);
+            });
+        $scope.showContact = !$scope.showContact;
+    }
+    //
     $scope.loadChatHistory = function (cvsId, cvsName) {
+        $scope.showContact = false;
         $scope.showMember = false;
         temp.skip = 0;
         $scope.isEnd = false;

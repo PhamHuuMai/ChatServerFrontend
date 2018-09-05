@@ -99,31 +99,18 @@
                 <div class="new_message_head">
                     <div class="pull-left">
                         <h3>{{conversationName}}</h3>
-                        <button ng-click="addMember()"><i class="fa fa-plus-square-o" aria-hidden="true"></i> Thêm thành viên </button>
+                        <!--  -->
+                        <button ng-click="loadMember()"><i class="fa fa-plus-square-o" aria-hidden="true"></i> Các thành viên </button>
                         <div class="animate-div member_area" ng-show="showMember">                            
-                            <span class="badge pull-left" style="margin: 10px">Mai1 dddddddddddddddddddddddddddddddddddddddddddddd</span>
-                            <span class="badge pull-left" style="margin: 10px">Mai1 dddddddddddddddddddddddddddddddddddddddddddddd</span>
-                            <span class="badge pull-left" style="margin: 10px">Mai1 dddddddddddddddddddddddddddddddddddddddddddddd</span>
-                            <span class="badge pull-left" style="margin: 10px">Mai1 dddddddddddddddddddddddddddddddddddddddddddddd</span>
-                            <span class="badge pull-left" style="margin: 10px">Mai1 dddddddddddddddddddddddddddddddddddddddddddddd</span>
-                            <span class="badge pull-left" style="margin: 10px">Mai1 dddddddddddddddddddddddddddddddddddddddddddddd</span>
-                            <span class="badge pull-left" style="margin: 10px">Mai1 dddddddddddddddddddddddddddddddddddddddddddddd</span>
-                            <span class="badge pull-left" style="margin: 10px">Mai1 dddddddddddddddddddddddddddddddddddddddddddddd</span>
-                            <span class="badge pull-left" style="margin: 10px">Mai1 dddddddddddddddddddddddddddddddddddddddddddddd</span>
-                            <span class="badge pull-left" style="margin: 10px">Mai1 dddddddddddddddddddddddddddddddddddddddddddddd</span>
-                            <span class="badge pull-left" style="margin: 10px">Mai1 dddddddddddddddddddddddddddddddddddddddddddddd</span>
-                            <span class="badge pull-left" style="margin: 10px">Mai1 dddddddddddddddddddddddddddddddddddddddddddddd</span>
-                            <span class="badge pull-left" style="margin: 10px">Mai1 dddddddddddddddddddddddddddddddddddddddddddddd</span>
-                            <span class="badge pull-left" style="margin: 10px">Mai1 dddddddddddddddddddddddddddddddddddddddddddddd</span>
-                            <span class="badge pull-left" style="margin: 10px">Mai1 dddddddddddddddddddddddddddddddddddddddddddddd</span>
-                            <span class="badge pull-left" style="margin: 10px">Mai1 dddddddddddddddddddddddddddddddddddddddddddddd</span>
-                            <span class="badge pull-left" style="margin: 10px">Mai1 dddddddddddddddddddddddddddddddddddddddddddddd</span>
-                            <span class="badge pull-left" style="margin: 10px">Mai1 dddddddddddddddddddddddddddddddddddddddddddddd</span>
-                            <span class="badge pull-left" style="margin: 10px">Mai1 dddddddddddddddddddddddddddddddddddddddddddddd</span>
-                            <span class="badge pull-left" style="margin: 10px">Mai1 dddddddddddddddddddddddddddddddddddddddddddddd</span>
-                            <span class="badge pull-left" style="margin: 10px">Mai1 dddddddddddddddddddddddddddddddddddddddddddddd</span>
-                            <span class="badge pull-left" style="margin: 10px">Mai1 dddddddddddddddddddddddddddddddddddddddddddddd</span>
-                        </div>    
+                            <span class="badge pull-left" style="margin: 10px" ng-repeat="x in lstMembers">{{x.userName}}</span>
+                        </div> 
+                        <br>
+                        <!--  -->
+                        <button ng-click="addMember()"><i class="fa fa-plus-square-o" aria-hidden="true"></i> Thêm thành viên </button>
+                        <div class="animate-div member_area" ng-show="showContact">                            
+                            <span class="badge pull-left" style="margin: 10px" ng-repeat="x in lstContact" ng-click="add($index)">{{x.userName}}</span>
+                        </div>
+                        <!--  -->
                     </div>
                     <div class="pull-right">
                         <div class="dropdown">
