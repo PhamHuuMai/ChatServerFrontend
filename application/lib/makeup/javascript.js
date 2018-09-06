@@ -20,8 +20,8 @@ window.FontAwesomeCdnConfig = {
 
 function resize(){
   document.getElementById('chat_area').style.height=(document.body.clientHeight*60)/100+'px';
-  document.getElementsByClassName('member_list')[0].style.height=(document.body.clientHeight*60)/100+'px';
-  document.getElementsByClassName('member_list')[1].style.height=(document.body.clientHeight*60)/100+'px';
+  document.getElementsByClassName('member_list')[0].style.height=(document.body.clientHeight*70)/100+'px';
+  document.getElementsByClassName('member_list')[1].style.height=(document.body.clientHeight*70)/100+'px';
   console.log(document.body.clientHeight);
 }
 

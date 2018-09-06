@@ -120,6 +120,7 @@ app.controller('chatCtl', ['socket', '$scope', 'communicate', function (socket, 
             },
             function (responseData) {
                 console.log(responseData);
+                $scope.loadConversation();
             }, function (errorCode) {
                 console.log(errorCode);
             });
