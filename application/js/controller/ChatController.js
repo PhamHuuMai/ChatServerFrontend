@@ -97,11 +97,11 @@ app.controller('chatCtl', ['socket', '$scope', 'communicate', function (socket, 
         $scope.message = "";
     }
     //
-    $scope.loadMember =function(){
+    $scope.loadMember = function () {
         communicate.post(
             "/allmember",
             {
-                cvsId : temp.curent_conversation
+                cvsId: temp.curent_conversation
             },
             function (responseData) {
                 $scope.lstMembers = responseData
@@ -112,13 +112,13 @@ app.controller('chatCtl', ['socket', '$scope', 'communicate', function (socket, 
     }
     //
     //
-    $scope.add = function(index){
+    $scope.add = function (index) {
         var element = $scope.lstContact[index];
         communicate.post(
             "/addmember",
             {
-                cvsId : temp.curent_conversation,
-                memberId :element.userId
+                cvsId: temp.curent_conversation,
+                memberId: element.userId
             },
             function (responseData) {
                 console.log(responseData);
@@ -129,11 +129,11 @@ app.controller('chatCtl', ['socket', '$scope', 'communicate', function (socket, 
 
         $scope.addMember();
     }
-    $scope.addMember = function(){
+    $scope.addMember = function () {
         communicate.post(
             "/allfriend",
             {
-                cvsId : temp.curent_conversation
+                cvsId: temp.curent_conversation
             },
             function (responseData) {
                 $scope.lstContact = responseData
@@ -144,6 +144,7 @@ app.controller('chatCtl', ['socket', '$scope', 'communicate', function (socket, 
     }
     //
     $scope.loadChatHistory = function (cvsId, cvsName) {
+        $scope.cvsNameBk = cvsName;
         $scope.showContact = false;
         $scope.showMember = false;
         temp.skip = 0;
@@ -162,7 +163,7 @@ app.controller('chatCtl', ['socket', '$scope', 'communicate', function (socket, 
                 take: temp.take
             },
             function (responseData) {
-                if(responseData.length < temp.take){
+                if (responseData.length < temp.take) {
                     $scope.isEnd = true;
                     console.log("==================" + $scope.isEnd);
                 }
@@ -226,23 +227,23 @@ app.controller('chatCtl', ['socket', '$scope', 'communicate', function (socket, 
         };
         socket.send(JSON.stringify(msg));
     }
-    $scope.saveNameCvs = function(){
-        console.log("sdfhipyhegioyohods");
+    $scope.saveNameCvs = function () {
         communicate.post(
             "/renameconversation",
             {
                 cvsId: temp.curent_conversation,
-                name: $scope.conversationName  
-            },
-            function (responseData) {
-                edit_cvs_name = true;
-                cvs_name_disable = true
+                name: $scope.conversationName
+            }, function (responseData) {
+                $scope.loadConversation();
+                $scope.edit(false);
+                $scope.cvsNameBk = $scope.conversationName;
                 console.log(responseData);
             }, function (errorCode) {
                 console.log(errorCode);
+                $scope.conversationName = $scope.cvsNameBk;
             });
     }
-    $scope.edit = function(is){
+    $scope.edit = function (is) {
         $scope.edit_cvs_name = is;
         $scope.cvs_name_disable = is;
     }
@@ -261,7 +262,7 @@ app.controller('chatCtl', ['socket', '$scope', 'communicate', function (socket, 
             // tim 
             $scope.conversations.forEach(ele => {
                 if (ele.id == cvsId) {
-                    if (msgObj.from != userId){
+                    if (msgObj.from != userId) {
                         ele.numUnread = ele.numUnread + 1;
                     }
                     ele.lastChat = msgObj.value;
