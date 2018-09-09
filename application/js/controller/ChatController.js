@@ -130,7 +130,9 @@ app.controller('chatCtl', ['socket', '$scope', 'communicate', function (socket, 
     $scope.addMember = function(){
         communicate.post(
             "/allfriend",
-            {},
+            {
+                cvsId : temp.curent_conversation
+            },
             function (responseData) {
                 $scope.lstContact = responseData
             }, function (errorCode) {
