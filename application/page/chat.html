@@ -83,7 +83,7 @@
                                     <strong class="primary-font" style="font-weight: 300">{{y.lastChat}}</strong>
                                     <h2>
                                         <span class="badge pull-right">{{y.numUnread}}</span>
-                                    </h3>
+                                        </h3>
                                 </div>
                             </div>
                         </li>
@@ -98,16 +98,23 @@
             <div class="row" ng-show="isChatting">
                 <div class="new_message_head">
                     <div class="pull-left">
-                        <h3>{{conversationName}}</h3>
+                        <div class="input-group col-xs-5">
+                            <input type="text" class="form-control" ng-model="conversationName" ng-disabled="cvs_name_disable">
+                            <span class="glyphicon glyphicon-pencil input-group-addon" ng-show="edit_cvs_name" ng-click="edit_cvs_name = false;cvs_name_disable = false"></span>
+                            <span class="glyphicon glyphicon-ok input-group-addon" ng-hide="edit_cvs_name" ng-click="save_name()"></span>
+                            <span class="glyphicon glyphicon-remove input-group-addon" ng-hide="edit_cvs_name" ng-click="edit_cvs_name = true;cvs_name_disable = true"></span>
+                        </div>
                         <!--  -->
-                        <button ng-click="loadMember()"><i class="fa fa-plus-square-o" aria-hidden="true"></i> Các thành viên </button>
-                        <div class="animate-div member_area" ng-show="showMember">                            
+                        <button ng-click="loadMember()">
+                            <i class="fa fa-plus-square-o" aria-hidden="true"></i> Các thành viên </button>
+                        <div class="animate-div member_area" ng-show="showMember">
                             <span class="badge pull-left" style="margin: 10px" ng-repeat="x in lstMembers">{{x.userName}}</span>
-                        </div> 
+                        </div>
                         <br>
                         <!--  -->
-                        <button ng-click="addMember()"><i class="fa fa-plus-square-o" aria-hidden="true"></i> Thêm thành viên </button>
-                        <div class="animate-div member_area" ng-show="showContact">                            
+                        <button ng-click="addMember()">
+                            <i class="fa fa-plus-square-o" aria-hidden="true"></i> Thêm thành viên </button>
+                        <div class="animate-div member_area" ng-show="showContact">
                             <span class="badge pull-left" style="margin: 10px" ng-repeat="x in lstContact" ng-click="add($index)">{{x.userName}}</span>
                         </div>
                         <!--  -->

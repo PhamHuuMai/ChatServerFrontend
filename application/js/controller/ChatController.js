@@ -11,6 +11,8 @@ app.controller('chatCtl', ['socket', '$scope', 'communicate', function (socket, 
     var pageStatus = {
 
     };
+    $scope.cvs_name_disable = true;
+    $scope.edit_cvs_name = true;
     $scope.type = false;
     $scope.disconected = false;
     $scope.tab = false;
@@ -224,6 +226,22 @@ app.controller('chatCtl', ['socket', '$scope', 'communicate', function (socket, 
         };
         socket.send(JSON.stringify(msg));
     }
+    $scope.save_name = function(){
+        communicate.post(
+            "/renameconversation",
+            {
+                cvsId: temp.curent_conversation,
+                name: conversationName  
+            },
+            function (responseData) {
+                edit_cvs_name = true;
+                cvs_name_disable = true
+                console.log(responseData);
+            }, function (errorCode) {
+                console.log(errorCode);
+            });
+    }
+    
     var recMsg = function (msg) {
         console.log(msg);
         var msgObj = JSON.parse(msg);
