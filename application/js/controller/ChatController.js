@@ -235,7 +235,7 @@ app.controller('chatCtl', ['socket', '$scope', 'communicate', function (socket, 
                 name: $scope.conversationName
             }, function (responseData) {
                 $scope.loadConversation();
-                $scope.edit(false);
+                $scope.edit(true);
                 $scope.cvsNameBk = $scope.conversationName;
                 console.log(responseData);
             }, function (errorCode) {
