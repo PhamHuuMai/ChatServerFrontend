@@ -28,41 +28,16 @@
             <div class="row">
                 <div id="custom-search-input">
                     <div class="input-group col-md-12">
-                        <input type="text" class="  search-query form-control" placeholder="Conversation" />
-                        <button class="btn btn-danger" type="button" ng-click="search()">
-                            <span class=" glyphicon glyphicon-search"></span>
+                        <input type="text" class="search-query form-control" ng-model="text" placeholder="Tìm kiếm" ng-change="search()"/>
+                        <button class="btn btn-danger" type="button" ng-click="cancel()" >
+                            <span class="glyphicon glyphicon-remove"></span>
                         </button>
                     </div>
                 </div>
-                <div class="dropdown all_conversation">
-                    <button class="dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fa fa-weixin" aria-hidden="true"></i>
-                        {{select}}
-                        <span class="caret pull-right"></span>
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                        <li>
-                            <a href="" ng-click="loadConversation()"> Tất cả cuộc hội thoại </a>
-                            <!-- <ul class="sub_menu_ list-unstyled">
-                                <li>
-                                    <a href="#"> All Conversation </a>
-                                </li>
-                            </ul> -->
-                        </li>
-                        <li>
-                            <a href="" ng-click="loadAllContact()">Tất cả bạn bè </a>
-                        </li>
-                        <li>
-                            <a href="" ng-click="loadAllRequest()">Yêu cầu kết bạn </a>
-                            </li>
-                        <li>
-                            <a href="" ng-click="loadAllUser()">Tất cả người dùng </a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="member_list" ng-show="contactTab">
+                <div class="member_list" ng-show="search1">
+                    {{statusSearch}}
                     <ul class="list-unstyled">
-                        <li class="left clearfix" ng-repeat="x in contact">
+                        <li class="left clearfix" ng-repeat="x in searchResult">
                             <span class="chat-img pull-left">
                                 <img src="{{x.avatar}}" alt="User Avatar" class="img-circle">
                             </span>
@@ -75,14 +50,63 @@
                                 <div class="contact_sec">
                                     <strong class="primary-font"></strong>
                                     <h3>
-                                        <span class="badge pull-right" ng-click="reject(x.id)">+</span>
+                                        <span class="badge pull-right" ng-click="addFriend(x.id)">+</span>
                                     </h3>
                                 </div>
                             </div>
                         </li>
                     </ul>
                 </div>
-                <div class="member_list" ng-show="userTab">
+                <div ng-hide="search1">
+                    <div class="dropdown all_conversation">
+                        <button class="dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-weixin" aria-hidden="true"></i>
+                            {{select}}
+                            <span class="caret pull-right"></span>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                            <li>
+                                <a href="" ng-click="loadConversation()"> Tất cả cuộc hội thoại </a>
+                                <!-- <ul class="sub_menu_ list-unstyled">
+                                <li>
+                                    <a href="#"> All Conversation </a>
+                                </li>
+                            </ul> -->
+                            </li>
+                            <li>
+                                <a href="" ng-click="loadAllContact()">Tất cả bạn bè </a>
+                            </li>
+                            <li>
+                                <a href="" ng-click="loadAllRequest()">Yêu cầu kết bạn </a>
+                            </li>
+                            <li>
+                                <a href="" ng-click="loadAllUser()">Tất cả người dùng </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="member_list" ng-show="contactTab">
+                        <ul class="list-unstyled">
+                            <li class="left clearfix" ng-repeat="x in contact">
+                                <span class="chat-img pull-left">
+                                    <img src="{{x.avatar}}" alt="User Avatar" class="img-circle">
+                                </span>
+                                <div class="chat-body clearfix">
+                                    <div class="header_sec">
+                                        <strong class="primary-font">{{x.name}}</strong>
+                                        <strong class="pull-right">
+                                            {{x.time}}</strong>
+                                    </div>
+                                    <div class="contact_sec">
+                                        <strong class="primary-font"></strong>
+                                        <h3>
+                                            <span class="badge pull-right" ng-click="reject(x.id)">+</span>
+                                        </h3>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="member_list" ng-show="userTab">
                         <ul class="list-unstyled">
                             <li class="left clearfix" ng-repeat="x in users">
                                 <span class="chat-img pull-left">
@@ -103,8 +127,8 @@
                                 </div>
                             </li>
                         </ul>
-                </div>
-                <div class="member_list" ng-show="requestTab">
+                    </div>
+                    <div class="member_list" ng-show="requestTab">
                         <ul class="list-unstyled">
                             <li class="left clearfix" ng-repeat="x in requests">
                                 <span class="chat-img pull-left">
@@ -126,28 +150,29 @@
                                 </div>
                             </li>
                         </ul>
-                </div>
-                <div class="member_list" ng-show="conversationTab">
-                    <ul class="list-unstyled">
-                        <li class="left clearfix" ng-repeat="y in conversations">
-                            <span class="chat-img pull-left">
-                                <img src="{{y.avatar}}" alt="User Avatar" class="img-circle">
-                            </span>
-                            <div class="chat-body clearfix" ng-click="loadChatHistory(y.id,y.name)">
-                                <div class="header_sec">
-                                    <strong class="primary-font">{{y.name}}</strong>
-                                    <strong class="pull-right">
-                                        {{y.lastTimeAction}}</strong>
+                    </div>
+                    <div class="member_list" ng-show="conversationTab">
+                        <ul class="list-unstyled">
+                            <li class="left clearfix" ng-repeat="y in conversations">
+                                <span class="chat-img pull-left">
+                                    <img src="{{y.avatar}}" alt="User Avatar" class="img-circle">
+                                </span>
+                                <div class="chat-body clearfix" ng-click="loadChatHistory(y.id,y.name)">
+                                    <div class="header_sec">
+                                        <strong class="primary-font">{{y.name}}</strong>
+                                        <strong class="pull-right">
+                                            {{y.lastTimeAction}}</strong>
+                                    </div>
+                                    <div class="contact_sec">
+                                        <strong class="primary-font" style="font-weight: 300">{{y.lastChat}}</strong>
+                                        <h2>
+                                            <span class="badge pull-right">{{y.numUnread}}</span>
+                                            </h3>
+                                    </div>
                                 </div>
-                                <div class="contact_sec">
-                                    <strong class="primary-font" style="font-weight: 300">{{y.lastChat}}</strong>
-                                    <h2>
-                                        <span class="badge pull-right">{{y.numUnread}}</span>
-                                        </h3>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>

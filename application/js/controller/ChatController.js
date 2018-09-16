@@ -26,18 +26,45 @@ app.controller('chatCtl', ['socket', '$scope', 'communicate', function (socket, 
     $scope.name = name;
     $scope.messages = [];
     $scope.conversations = [];
+    $scope.searchResult = [];
     $scope.isChatting = false;
+    $scope.search1 = false;
     $scope.conversationName = "";
     $scope.lstContact = [];
     $scope.select = "";
-    $scope.search = function () {
-        // chua lam
-    };
     //
     $scope.logout = function () {
         sessionStorage.clear();
         window.location = '/';
         console.log("logout");
+    }
+    $scope.search = function () {
+        $scope.search1 = true;
+        communicate.post(
+            "/searchUser",
+            {
+                text: $scope.text
+            },
+            function (responseData) {
+                $scope.searchResult = [];
+                $scope.statusSearch = "Không có kết quả tìm kiếm.";
+                responseData.forEach(element => {
+                    $scope.statusSearch = "";
+                    $scope.searchResult.push({
+                        id: element.userId,
+                        name: element.userName,
+                        avatar: hostImg + element.avatar,
+                        time: element.lastLoginTIme
+                    });
+                });
+            }, function (errorCode) {
+                console.log(errorCode);
+            });
+        console.log("search");
+    }
+    $scope.cancel = function() {
+        $scope.search1 = false;
+        $scope.text = "";
     }
     $scope.editNameClk = function () {
         $scope.editName = false;
