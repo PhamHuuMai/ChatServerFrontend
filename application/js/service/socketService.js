@@ -43,6 +43,9 @@ app.factory('socket', ['$q', function($q) {
     Service.close = function(closeAction) { 
         onClose = closeAction;
     };
+    Service.close = function() { 
+        
+    };
     Service.addListener = function(listener){
         listeners.push(listener);
     };

@@ -53,6 +53,9 @@
                             <a href="" ng-click="loadAllContact()">Tất cả bạn bè </a>
                         </li>
                         <li>
+                            <a href="" ng-click="loadAllRequest()">Yêu cầu kết bạn </a>
+                            </li>
+                        <li>
                             <a href="" ng-click="loadAllUser()">Tất cả người dùng </a>
                         </li>
                     </ul>
@@ -72,7 +75,7 @@
                                 <div class="contact_sec">
                                     <strong class="primary-font"></strong>
                                     <h3>
-                                        <span class="badge pull-right" ng-click="connect(x.id)">+</span>
+                                        <span class="badge pull-right" ng-click="reject(x.id)">+</span>
                                     </h3>
                                 </div>
                             </div>
@@ -100,7 +103,30 @@
                                 </div>
                             </li>
                         </ul>
-                    </div>
+                </div>
+                <div class="member_list" ng-show="requestTab">
+                        <ul class="list-unstyled">
+                            <li class="left clearfix" ng-repeat="x in requests">
+                                <span class="chat-img pull-left">
+                                    <img src="{{x.avatar}}" alt="User Avatar" class="img-circle">
+                                </span>
+                                <div class="chat-body clearfix">
+                                    <div class="header_sec">
+                                        <strong class="primary-font">{{x.name}}</strong>
+                                        <strong class="pull-right">
+                                            {{x.time}}</strong>
+                                    </div>
+                                    <div class="contact_sec">
+                                        <strong class="primary-font"></strong>
+                                        <h3>
+                                            <span class="badge pull-right" ng-click="deny(x.id)">-</span>
+                                            <span class="badge pull-right" ng-click="accept(x.id)">+</span>
+                                        </h3>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                </div>
                 <div class="member_list" ng-show="conversationTab">
                     <ul class="list-unstyled">
                         <li class="left clearfix" ng-repeat="y in conversations">
@@ -180,7 +206,10 @@
                                 <img src="{{x.avatar}}" alt="User Avatar" class="img-circle">
                             </span>
                             <div class="chat-body1 clearfix">
-                                <p class="img-rounded">{{x.value}}</p>
+                                <p class="img-rounded" ng-show="x.msgType == 1">{{x.value}}</p>
+                                <p class="img-rounded" ng-show="x.msgType == 3">
+                                    <a href="{{x.value}}">{{x.name}} đã gửi một file </a>
+                                </p>
                                 <div class="badge chat_time {{!x.isMe ? 'pull-right' :'pull-left' }}">
                                     <strong>{{x.time}}</strong>
                                 </div>

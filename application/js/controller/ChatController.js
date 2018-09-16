@@ -35,6 +35,8 @@ app.controller('chatCtl', ['socket', '$scope', 'communicate', function (socket, 
     };
     //
     $scope.logout = function () {
+        sessionStorage.clear();
+        window.location = '/';
         console.log("logout");
     }
     $scope.editNameClk = function () {
@@ -83,6 +85,7 @@ app.controller('chatCtl', ['socket', '$scope', 'communicate', function (socket, 
         $scope.contactTab = false;
         $scope.conversationTab = true;
         $scope.userTab = false;
+        $scope.requestTab = false;
         $scope.conversations = [];
         communicate.post(
             "/getallconversation",
@@ -101,12 +104,13 @@ app.controller('chatCtl', ['socket', '$scope', 'communicate', function (socket, 
             }, function (errorCode) {
                 console.log(errorCode);
             });
-    }
+    };
     $scope.loadAllContact = function () {
         $scope.select = "Tất cả liên lạc";
         $scope.contactTab = true;
         $scope.conversationTab = false;
         $scope.userTab = false;
+        $scope.requestTab = false;
         communicate.post(
             "/getAllFriend",
             {},
@@ -123,12 +127,13 @@ app.controller('chatCtl', ['socket', '$scope', 'communicate', function (socket, 
             }, function (errorCode) {
                 console.log(errorCode);
             });
-    }
+    };
     $scope.loadAllUser = function () {
         $scope.select = "Tất cả người dùng";
         $scope.contactTab = false;
         $scope.conversationTab = false;
         $scope.userTab = true;
+        $scope.requestTab = false;
         communicate.post(
             "/getAllUser",
             {},
@@ -145,7 +150,31 @@ app.controller('chatCtl', ['socket', '$scope', 'communicate', function (socket, 
             }, function (errorCode) {
                 console.log(errorCode);
             });
-    }
+    };
+    $scope.loadAllRequest = function () {
+        $scope.select = "Yêu cầu kết bạn";
+        $scope.contactTab = false;
+        $scope.conversationTab = false;
+        $scope.userTab = false;
+        $scope.requestTab = true;
+        communicate.post(
+            "/getAllRequestedFriend",
+            {},
+            function (responseData) {
+                $scope.requests = [];
+                responseData.forEach(element => {
+                    $scope.requests.push({
+                        id: element.userId,
+                        name: element.userName,
+                        avatar: hostImg + element.avatar,
+                        time: element.lastLoginTIme
+                    });
+                });
+            }, function (errorCode) {
+                console.log(errorCode);
+            });
+    };
+
     $scope.connect = function (id) {
         $scope.select = "All Contact";
         communicate.post(
@@ -159,7 +188,7 @@ app.controller('chatCtl', ['socket', '$scope', 'communicate', function (socket, 
                 console.log(errorCode);
             });
 
-    }
+    };
     $scope.send = function () {
         var msg = {
             msg_type: 1,
@@ -168,7 +197,58 @@ app.controller('chatCtl', ['socket', '$scope', 'communicate', function (socket, 
         };
         socket.send(JSON.stringify(msg));
         $scope.message = "";
-    }
+    };
+    $scope.addFriend = function (id) {
+        communicate.post(
+            "/requestfriend",
+            {
+                friendId: id
+            },
+            function (responseData) {
+                alert("Send request successfull");
+            }, function (errorCode) {
+                console.log(errorCode);
+            });
+    };
+    $scope.reject = function (id) {
+        communicate.post(
+            "/rejectfriend",
+            {
+                friendId: id
+            },
+            function (responseData) {
+                $scope.loadAllContact();
+                alert("Reject successfull");
+            }, function (errorCode) {
+                console.log(errorCode);
+            });
+    };
+    $scope.deny = function (id) {
+        communicate.post(
+            "/denyfriend",
+            {
+                friendId: id
+            },
+            function (responseData) {
+                $scope.loadAllRequest();
+                alert("Deny successfull");
+            }, function (errorCode) {
+                console.log(errorCode);
+            });
+    };
+    $scope.accept = function (id) {
+        communicate.post(
+            "/acceptfriend",
+            {
+                friendId: id
+            },
+            function (responseData) {
+                $scope.loadAllRequest
+                alert("Acept successfull");
+            }, function (errorCode) {
+                console.log(errorCode);
+            });
+    };
     //
     $scope.loadMember = function () {
         communicate.post(
@@ -182,7 +262,7 @@ app.controller('chatCtl', ['socket', '$scope', 'communicate', function (socket, 
                 console.log(errorCode);
             });
         $scope.showMember = !$scope.showMember;
-    }
+    };
     //
     $scope.add = function (index) {
         var element = $scope.lstContact[index];
@@ -200,7 +280,7 @@ app.controller('chatCtl', ['socket', '$scope', 'communicate', function (socket, 
             });
 
         $scope.addMember();
-    }
+    };
     $scope.addMember = function () {
         communicate.post(
             "/allfriend",
@@ -213,7 +293,7 @@ app.controller('chatCtl', ['socket', '$scope', 'communicate', function (socket, 
                 console.log(errorCode);
             });
         $scope.showContact = !$scope.showContact;
-    }
+    };
     //
     $scope.loadChatHistory = function (cvsId, cvsName) {
         $scope.cvsNameBk = cvsName;
@@ -244,6 +324,7 @@ app.controller('chatCtl', ['socket', '$scope', 'communicate', function (socket, 
                         id: element.id,
                         isMe: element.userId == userId,
                         value: element.value,
+                        msgType: element.type,
                         avatar: hostImg + element.avatar,
                         time: element.time,
                         name: element.name
@@ -322,7 +403,7 @@ app.controller('chatCtl', ['socket', '$scope', 'communicate', function (socket, 
         $scope.cvs_name_disable = is;
     }
     $scope.sendFile = function () {
-        if($scope.fileBase64==null || $scope.fileBase64=='')
+        if ($scope.fileBase64 == null || $scope.fileBase64 == '')
             return;
         var sendMsg = function (value) {
             var msg = {
@@ -353,12 +434,16 @@ app.controller('chatCtl', ['socket', '$scope', 'communicate', function (socket, 
         console.log(msg);
         var msgObj = JSON.parse(msg);
         var msgType = msgObj.msg_type;
+        var cvsId = msgObj.to;
+        if (cvsId != temp.curent_conversation)
+            return;
         if (msgType == 1 || msgType == 3) {
             var cvsId = msgObj.to;
             var msgElement = {
                 isMe: msgObj.from == userId,
                 value: msgObj.value,
                 name: msgObj.name,
+                msgType: msgType,
                 avatar: hostImg + msgObj.avt,
                 time: 'now'
             };
