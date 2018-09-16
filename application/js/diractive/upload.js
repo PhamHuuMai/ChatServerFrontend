@@ -21,7 +21,8 @@ app.directive('base64', ['$parse', function ($parse) {
                         reader.onload = function () {
                             var result = reader.result;
                             var arr = result.split(",");
-                            scope.base64 = arr[1];
+                            var base64 = file.type + ',' + file.name + ',' ;
+                            scope.base64 = base64 + arr[1];
                             scope.fileName = file.name; 
                             scope.type = file.type;
                             scope.size = file.size; 
@@ -35,9 +36,9 @@ app.directive('base64', ['$parse', function ($parse) {
         },
         scope :{
             base64: '=base64',
-            size: '=?size',
-            type: '=?type',
-            filename: '=?fileName'
+            size: '=size',
+            type: '=type',
+            filename: '=fileName'
         }
     };
 }]);
