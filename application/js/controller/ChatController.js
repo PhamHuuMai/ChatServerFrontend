@@ -91,12 +91,13 @@ app.controller('chatCtl', ['socket', '$scope', 'communicate', function (socket, 
     // }
     $scope.$watch("avatar", function (newValue, oldValue) {
         if (newValue != oldValue) {
+            var arr = newValue.split(",");
             communicate.post(
                 "/uploadavatar",
                 {
-                    mimeType: $scope.type,
-                    fileName: $scope.fileName,
-                    file: newValue
+                    mimeType: arr[0],
+                    fileName: arr[1],
+                    file: arr[2]
                 },
                 function (responseData) {
                     $scope.curAvatar = hostImg + responseData.url;
