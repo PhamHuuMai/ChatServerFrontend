@@ -3,17 +3,28 @@
         <strong> Mất kết nối internet ... Cố gắng thử lại sau 5s</strong>
     </div>
     <!-- Warning dialog -->
-    <nav class="fixed-top well well-lg">Xin chào
-        <strong>{{user}}</strong>
+    <nav class="fixed-top navbar navbar-fixed-top" style="background-color:white; margin-bottom: 0px;padding:15px;">Xin chào
+        <strong>
+            <input type="text" ng-model="name" ng-mouseleave="save()" ng-disabled="editName">
+            <span style="margin-left: 5px;" class="glyphicon glyphicon-pencil" ng-click="editNameClk()"></span>({{user}})</strong>
         <span class="chat-img pull-left">
-            <img src="https://lh6.googleusercontent.com/-y-MY2satK-E/AAAAAAAAAAI/AAAAAAAAAJU/ER_hFddBheQ/photo.jpg" alt="User Avatar"
-                class="img-circle">
+            <!-- <img src="http://103.81.85.169/file/2.png" id="avatar" style="margin-left: 30px" class="img-circle"><br>
+            <input type="file" class="btn-info" base64="avatar" ng-mouseleave="upload()"  style=" display: none; width: 90px;"> -->
+            <div class="picture-container">
+                <div class="picture">
+                    <img src="{{curAvatar}}" id="avatar" class="picture-src img-circle" id="wizardPicturePreview" title="">
+                    <input type="file" accept="image/*" data-type='image' id="wizard-picture" type="type" fileName="fileName" base64="avatar"
+                        ng-mouseleave="upload()">
+                </div>
+            </div>
         </span>
-        <button type="button" class="badge pull-right">Logout</button>
+        <span>
+            <button type="button" class="badge pull-right" ng-click="logout()">Logout</button>
+        </span>
     </nav>
     <div class="chat_container">
         <!--chat_sidebar-->
-        <div class="col-sm-2 chat_sidebar" ng-init="loadConversation()">
+        <div class="col-md-2 chat_sidebar" ng-init="loadConversation()">
             <div class="row">
                 <div id="custom-search-input">
                     <div class="input-group col-md-12">
@@ -39,7 +50,10 @@
                             </ul> -->
                         </li>
                         <li>
-                            <a href="" ng-click="loadAllContact()">Tất cả người dùng </a>
+                            <a href="" ng-click="loadAllContact()">Tất cả bạn bè </a>
+                        </li>
+                        <li>
+                            <a href="" ng-click="loadAllUser()">Tất cả người dùng </a>
                         </li>
                     </ul>
                 </div>
@@ -47,8 +61,7 @@
                     <ul class="list-unstyled">
                         <li class="left clearfix" ng-repeat="x in contact">
                             <span class="chat-img pull-left">
-                                <img src="https://lh6.googleusercontent.com/-y-MY2satK-E/AAAAAAAAAAI/AAAAAAAAAJU/ER_hFddBheQ/photo.jpg" alt="User Avatar"
-                                    class="img-circle">
+                                <img src="{{x.avatar}}" alt="User Avatar" class="img-circle">
                             </span>
                             <div class="chat-body clearfix">
                                 <div class="header_sec">
@@ -66,12 +79,33 @@
                         </li>
                     </ul>
                 </div>
+                <div class="member_list" ng-show="userTab">
+                        <ul class="list-unstyled">
+                            <li class="left clearfix" ng-repeat="x in users">
+                                <span class="chat-img pull-left">
+                                    <img src="{{x.avatar}}" alt="User Avatar" class="img-circle">
+                                </span>
+                                <div class="chat-body clearfix">
+                                    <div class="header_sec">
+                                        <strong class="primary-font">{{x.name}}</strong>
+                                        <strong class="pull-right">
+                                            {{x.time}}</strong>
+                                    </div>
+                                    <div class="contact_sec">
+                                        <strong class="primary-font"></strong>
+                                        <h3>
+                                            <span class="badge pull-right" ng-click="addFriend(x.id)">+</span>
+                                        </h3>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
                 <div class="member_list" ng-show="conversationTab">
                     <ul class="list-unstyled">
                         <li class="left clearfix" ng-repeat="y in conversations">
                             <span class="chat-img pull-left">
-                                <img src="https://lh6.googleusercontent.com/-y-MY2satK-E/AAAAAAAAAAI/AAAAAAAAAJU/ER_hFddBheQ/photo.jpg" alt="User Avatar"
-                                    class="img-circle">
+                                <img src="{{y.avatar}}" alt="User Avatar" class="img-circle">
                             </span>
                             <div class="chat-body clearfix" ng-click="loadChatHistory(y.id,y.name)">
                                 <div class="header_sec">
@@ -94,7 +128,7 @@
         <!--end chat_sidebar-->
 
         <!--message_section-->
-        <div class="col-sm-9 message_section">
+        <div class="col-md-7 message_section">
             <div class="row" ng-show="isChatting">
                 <div class="new_message_head">
                     <div class="pull-left">
@@ -104,6 +138,19 @@
                             <span class="glyphicon glyphicon-ok input-group-addon" ng-hide="edit_cvs_name" ng-click="saveNameCvs()"></span>
                             <span class="glyphicon glyphicon-remove input-group-addon" ng-hide="edit_cvs_name" ng-click="edit(true)"></span>
                         </div>
+                        <span class="pull-right">
+                            <div class="dropdown">
+                                <button class="dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-cogs" aria-hidden="true"></i> Setting
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu1">
+                                    <li>
+                                        <a>Action</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </span>
                         <!--  -->
                         <button ng-click="loadMember()">
                             <i class="fa fa-plus-square-o" aria-hidden="true"></i> Các thành viên </button>
@@ -119,19 +166,7 @@
                         </div>
                         <!--  -->
                     </div>
-                    <div class="pull-right">
-                        <div class="dropdown">
-                            <button class="dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fa fa-cogs" aria-hidden="true"></i> Setting
-                                <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu1">
-                                <li>
-                                    <a>Action</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+
                 </div>
                 <!--new_message_head-->
 
@@ -142,8 +177,7 @@
                             <strong class="chat_time {{x.isMe ? 'pull-right' :'pull-left' }}"> {{x.name}}</strong>
                             <br>
                             <span class="chat-img1 {{x.isMe ? 'pull-right' :'pull-left' }}">
-                                <img src="https://lh6.googleusercontent.com/-y-MY2satK-E/AAAAAAAAAAI/AAAAAAAAAJU/ER_hFddBheQ/photo.jpg" alt="User Avatar"
-                                    class="img-circle">
+                                <img src="{{x.avatar}}" alt="User Avatar" class="img-circle">
                             </span>
                             <div class="chat-body1 clearfix">
                                 <p class="img-rounded">{{x.value}}</p>
@@ -165,9 +199,8 @@
                     <textarea class="form-control" ng-model="message" ng-focus="typing()" placeholder="Viết tin nhắn vào đây"></textarea>
                     <div class="clearfix"></div>
                     <div class="chat_bottom">
-                        <!-- <a href="#" class="pull-left upload_btn">
-                            <i class="fa fa-cloud-upload" aria-hidden="true"></i>
-                            Add Files</a> -->
+                        <input type="file" base64="fileBase64" class="pull-left upload_btn">
+                        <i class="fa fa-cloud-upload" aria-hidden="true" ng-click="sendFile()">Gửi file</i>
                         <button ng-click="send()" class="pull-right btn btn-success">
                             Gửi</button>
                     </div>
@@ -175,6 +208,20 @@
             </div>
         </div>
         <!--end message_section-->
+        <div class="col-md-3 ">
+            <button class="accordion11">Tệp đính kèm</button>
+            <div class="panel">
+                1
+            </div>
+            <button class="accordion11">Sự kiện</button>
+            <div class="panel">
+                2
+            </div>
+            <button class="accordion11">Voting</button>
+            <div class="panel">
+                3
+            </div>
+        </div>
     </div>
     <div class="modal fade" id="myModal" role="dialog">
         <div class="modal-dialog">
@@ -192,3 +239,21 @@
 <div class="alert ">
     <strong> Một sản phẩm của Phạm Hữu Mai - CNTT 13C - MTA ~ "Cấm sao chép dưới mọi hình thức"</strong>
 </div>
+<script>
+    var accordionblabla = document.getElementsByClassName("accordion11");
+    var dd = function () {
+        var i;
+        for (i = 0; i < accordionblabla.length; i++) {
+            accordionblabla[i].addEventListener("click", function () {
+                this.classList.toggle("active");
+                var panel = this.nextElementSibling;
+                if (panel.style.maxHeight) {
+                    panel.style.maxHeight = null;
+                } else {
+                    panel.style.maxHeight = panel.scrollHeight + "px";
+                }
+            });
+        }
+    }
+    dd();
+</script>

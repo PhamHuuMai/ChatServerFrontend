@@ -11,6 +11,7 @@ app.controller('chatCtl', ['socket', '$scope', 'communicate', function (socket, 
     var pageStatus = {
 
     };
+    $scope.editName = true;
     $scope.cvs_name_disable = true;
     $scope.edit_cvs_name = true;
     $scope.type = false;
@@ -18,8 +19,11 @@ app.controller('chatCtl', ['socket', '$scope', 'communicate', function (socket, 
     $scope.tab = false;
     $scope.isEnd = false;
     var user = window.sessionStorage.getItem('user');
+    var name = window.sessionStorage.getItem('name');
     var userId = window.sessionStorage.getItem('user_id')
-    $scope.user = ' ~ ' + user;
+    $scope.curAvatar = window.sessionStorage.getItem('avatar')
+    $scope.user = user;
+    $scope.name = name;
     $scope.messages = [];
     $scope.conversations = [];
     $scope.isChatting = false;
@@ -29,11 +33,56 @@ app.controller('chatCtl', ['socket', '$scope', 'communicate', function (socket, 
     $scope.search = function () {
         // chua lam
     };
+    //
+    $scope.logout = function () {
+        console.log("logout");
+    }
+    $scope.editNameClk = function () {
+        $scope.editName = false;
+    }
+    $scope.save = function () {
+        $scope.editName = true;
+        // call api
+        communicate.post(
+            "/rename",
+            {
+                newName: $scope.name
+            },
+            function (responseData) {
+                window.sessionStorage.setItem('name', $scope.name);
+            }, function (errorCode) {
+                console.log(errorCode);
+            });
+        //
+    }
+    //
+    // $scope.upload = function(){
+    //     document.getElementById('avatar').src = $scope.avatar;
+    //     console.log($scope.avatar);
+    // }
+    $scope.$watch("avatar", function (newValue, oldValue) {
+        if (newValue != oldValue) {
+            communicate.post(
+                "/uploadavatar",
+                {
+                    mimeType: $scope.type,
+                    fileName: $scope.fileName,
+                    file: newValue
+                },
+                function (responseData) {
+                    $scope.curAvatar = hostImg + responseData.url;
+                    document.getElementById('avatar').src = hostImg + responseData.url;
+                }, function (errorCode) {
+                    document.getElementById('avatar').src = oldValue;
+                });
+        }
+    }, true);
 
     $scope.loadConversation = function () {
         $scope.select = "Tất cả cuộc hội thoại";
         $scope.contactTab = false;
         $scope.conversationTab = true;
+        $scope.userTab = false;
         $scope.conversations = [];
         communicate.post(
             "/getallconversation",
@@ -44,6 +93,7 @@ app.controller('chatCtl', ['socket', '$scope', 'communicate', function (socket, 
                         id: element.id,
                         name: element.name,
                         lastChat: element.lastChat,
+                        avatar: hostImg + element.avatar,
                         numUnread: element.numUnread,
                         lastTimeAction: element.lastTimeAction
                     });
@@ -53,12 +103,12 @@ app.controller('chatCtl', ['socket', '$scope', 'communicate', function (socket, 
             });
     }
     $scope.loadAllContact = function () {
-        $scope.select = "Tất cả người dùng";
+        $scope.select = "Tất cả liên lạc";
         $scope.contactTab = true;
         $scope.conversationTab = false;
-
+        $scope.userTab = false;
         communicate.post(
-            "/getAllUser",
+            "/getAllFriend",
             {},
             function (responseData) {
                 $scope.contact = [];
@@ -66,6 +116,29 @@ app.controller('chatCtl', ['socket', '$scope', 'communicate', function (socket, 
                     $scope.contact.push({
                         id: element.userId,
                         name: element.userName,
+                        avatar: hostImg + element.avatar,
+                        time: element.lastLoginTIme
+                    });
+                });
+            }, function (errorCode) {
+                console.log(errorCode);
+            });
+    }
+    $scope.loadAllUser = function () {
+        $scope.select = "Tất cả người dùng";
+        $scope.contactTab = false;
+        $scope.conversationTab = false;
+        $scope.userTab = true;
+        communicate.post(
+            "/getAllUser",
+            {},
+            function (responseData) {
+                $scope.users = [];
+                responseData.forEach(element => {
+                    $scope.users.push({
+                        id: element.userId,
+                        name: element.userName,
+                        avatar: hostImg + element.avatar,
                         time: element.lastLoginTIme
                     });
                 });
@@ -110,7 +183,6 @@ app.controller('chatCtl', ['socket', '$scope', 'communicate', function (socket, 
             });
         $scope.showMember = !$scope.showMember;
     }
-    //
     //
     $scope.add = function (index) {
         var element = $scope.lstContact[index];
@@ -172,6 +244,7 @@ app.controller('chatCtl', ['socket', '$scope', 'communicate', function (socket, 
                         id: element.id,
                         isMe: element.userId == userId,
                         value: element.value,
+                        avatar: hostImg + element.avatar,
                         time: element.time,
                         name: element.name
                     });
@@ -206,6 +279,7 @@ app.controller('chatCtl', ['socket', '$scope', 'communicate', function (socket, 
                         id: element.id,
                         isMe: element.userId == userId,
                         value: element.value,
+                        avatar: hostImg + element.avatar,
                         time: element.time,
                         name: element.name
                     });
@@ -247,16 +321,45 @@ app.controller('chatCtl', ['socket', '$scope', 'communicate', function (socket, 
         $scope.edit_cvs_name = is;
         $scope.cvs_name_disable = is;
     }
+    $scope.sendFile = function () {
+        if($scope.fileBase64==null || $scope.fileBase64=='')
+            return;
+        var sendMsg = function (value) {
+            var msg = {
+                msg_type: 3,
+                to: temp.curent_conversation,
+                value: value
+            };
+            socket.send(JSON.stringify(msg));
+            $scope.message = "";
+        }
+        communicate.post(
+            "/uploadfileattachment",
+            {
+                cvsId: temp.curent_conversation,
+                mimeType: $scope.type,
+                fileName: $scope.fileName,
+                file: $scope.fileBase64
+            },
+            function (responseData) {
+                var value = hostImg + responseData.url;
+                sendMsg(value);
+            }, function (errorCode) {
+                console.log(errorCode);
+            });
+
+    }
     var recMsg = function (msg) {
         console.log(msg);
         var msgObj = JSON.parse(msg);
         var msgType = msgObj.msg_type;
-        if (msgType == 1) {
+        if (msgType == 1 || msgType == 3) {
             var cvsId = msgObj.to;
             var msgElement = {
                 isMe: msgObj.from == userId,
                 value: msgObj.value,
                 name: msgObj.name,
+                avatar: hostImg + msgObj.avt,
                 time: 'now'
             };
             // tim 

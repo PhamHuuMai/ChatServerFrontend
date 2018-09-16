@@ -26,6 +26,8 @@ app.controller('accountCtl', ['$scope', 'communicate', 'md5', function ($scope, 
                 window.sessionStorage.setItem('token',responseData.token);
                 window.sessionStorage.setItem('user',responseData.email);
                 window.sessionStorage.setItem('user_id',responseData.userId);
+                window.sessionStorage.setItem('name',responseData.name);
+                window.sessionStorage.setItem('avatar',hostImg + responseData.avatar);
                 window.location = '/#!/chat';
             }, function (errorCode) {
                 alertMsg('danger', 'Incorrect email or password');
@@ -47,6 +49,8 @@ app.controller('accountCtl', ['$scope', 'communicate', 'md5', function ($scope, 
                 window.sessionStorage.setItem('token',responseData.token);
                 window.sessionStorage.setItem('user',responseData.email);
                 window.sessionStorage.setItem('user_id',responseData.userId);
+                window.sessionStorage.setItem('name',responseData.name);
+                window.sessionStorage.setItem('avatar',hostImg + responseData.avatar);
                 window.location = '/#!/chat';
             }, function (errorCode) {
                 if (errorCode == -1)

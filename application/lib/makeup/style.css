@@ -89,8 +89,11 @@
    border: 1px solid #dddddd;
    }
    .chat-img img {
-   height: 34px;
-   width: 34px;
+   height: 50px;
+   width: 50px;
+   }
+   .chat-img {
+    margin: 5px;
    }
    .member_list li {
    border-bottom: 1px solid #dddddd;
@@ -132,7 +135,7 @@
 .new_message_head {
   background: #F5F4A0 none repeat scroll 0 0;
   float: left;
-  font-size: 20px;
+  font-size: 10px;
   font-weight: 600;
   padding: 18px 10px;
   width: 100%;
@@ -200,8 +203,8 @@
 }
 
 body {
-  padding-top: 90px;
-  font-size: 18px;
+  padding-top: 105px;
+  /* font-size: 18px; */
 }
 
 .animate-div {
@@ -222,4 +225,90 @@ body {
   overflow-x: hidden;
   overflow-y: auto;
   width: 100%;
+}
+
+/*Profile Pic Start*/
+.picture-container{
+  position: relative;
+  cursor: pointer;
+  text-align: center;
+}
+.picture{
+  width: 50px;
+  height: 50px;
+  background-color: #999999;
+  border: 4px solid #CCCCCC;
+  color: #FFFFFF;
+  border-radius: 50%;
+  margin: 0px auto;
+  overflow: hidden;
+  transition: all 0.2s;
+  -webkit-transition: all 0.2s;
+}
+.picture:hover{
+  border-color: #2ca8ff;
+}
+.content.ct-wizard-green .picture:hover{
+  border-color: #05ae0e;
+}
+.content.ct-wizard-blue .picture:hover{
+  border-color: #3472f7;
+}
+.content.ct-wizard-orange .picture:hover{
+  border-color: #ff9500;
+}
+.content.ct-wizard-red .picture:hover{
+  border-color: #ff3b30;
+}
+.picture input[type="file"] {
+  cursor: pointer;
+  display: block;
+  height: 100%;
+  left: 0;
+  opacity: 0 !important;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+.picture-src{
+  width: 100%;
+  
+}
+/*Profile Pic End*/
+.accordion11 {
+  background-color: #eee;
+  color: #444;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+  transition: 0.4s;
+}
+
+.active, .accordion11:hover {
+  background-color: #ccc;
+}
+
+.accordion11:after {
+  content: '\002B';
+  color: #777;
+  font-weight: bold;
+  float: right;
+  margin-left: 5px;
+}
+
+.active:after {
+  content: "\2212";
+}
+
+.panel {
+  padding: 0 18px;
+  background-color: white;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
 }
