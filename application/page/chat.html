@@ -213,6 +213,7 @@
                         <button ng-click="addMember()">
                             <i class="fa fa-plus-square-o" aria-hidden="true"></i> Thêm thành viên </button>
                         <div class="animate-div member_area" ng-show="showContact">
+                            <span class="badge pull-left" style="margin: 10px" ng-show="lstContact.leght == 0" >Không có ai cả</span>
                             <span class="badge pull-left" style="margin: 10px" ng-repeat="x in lstContact" ng-click="add($index)">{{x.userName}}</span>
                         </div>
                         <!--  -->
