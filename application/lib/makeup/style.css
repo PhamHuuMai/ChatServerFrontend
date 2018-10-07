@@ -314,3 +314,6 @@ body {
   overflow: hidden;
   transition: max-height 0.2s ease-out;
 }
+.jumbotron {
+  background-color : rgba(255, 230, 236, 0.47);
+}
