@@ -7,7 +7,7 @@ app.directive('base64', ['$parse', function ($parse) {
             element.bind('change', function () {
                 var file = element[0].files[0];
                 if(file.size > 1048576){
-                    alert('Kích cỡ file lớn hơn 1 MB');
+                    alert('Kích cỡ file lớn hơn 4 MB');
                     return;
                 }
                 scope.$apply(function () {

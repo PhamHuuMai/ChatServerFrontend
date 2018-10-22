@@ -18,6 +18,7 @@ app.controller('chatCtl', ['socket', '$scope', 'communicate', function (socket, 
     $scope.disconected = false;
     $scope.tab = false;
     $scope.isEnd = false;
+    $scope.eventInputShow = false;
     var user = window.sessionStorage.getItem('user');
     var name = window.sessionStorage.getItem('name');
     var userId = window.sessionStorage.getItem('user_id')
@@ -32,6 +33,8 @@ app.controller('chatCtl', ['socket', '$scope', 'communicate', function (socket, 
     $scope.conversationName = "";
     $scope.lstContact = [];
     $scope.select = "";
+    $scope.events = [{}];
+    $scope.files = [];
     //
     $scope.logout = function () {
         sessionStorage.clear();
@@ -62,7 +65,7 @@ app.controller('chatCtl', ['socket', '$scope', 'communicate', function (socket, 
             });
         console.log("search");
     }
-    $scope.cancel = function() {
+    $scope.cancel = function () {
         $scope.search1 = false;
         $scope.text = "";
     }
@@ -433,9 +436,9 @@ app.controller('chatCtl', ['socket', '$scope', 'communicate', function (socket, 
     $scope.sendFile = function () {
         if ($scope.fileBase64 == null || $scope.fileBase64 == '')
             return;
-        var sendMsg = function (value) {
+        var sendMsg = function (value,type) {
             var msg = {
-                msg_type: 3,
+                msg_type: type,
                 to: temp.curent_conversation,
                 value: value
             };
@@ -453,11 +456,126 @@ app.controller('chatCtl', ['socket', '$scope', 'communicate', function (socket, 
             },
             function (responseData) {
                 var value = hostImg + responseData.url;
-                sendMsg(value);
+                console.log(responseData);
+                sendMsg(value,responseData.type);
             }, function (errorCode) {
                 console.log(errorCode);
             });
 
+    }
+    $scope.addEvent = function () {
+        console.log($scope.event);
+        if (temp.curent_conversation != "" && $scope.event.time != null)
+            communicate.post(
+                "/createevent",
+                {
+                    cvsId: temp.curent_conversation,
+                    piority: $scope.event.piority,
+                    title: $scope.event.title,
+                    content: $scope.event.content,
+                    time: toDateStr($scope.event.time)
+                },
+                function (responseData) {
+                    $scope.eventInputShow = false
+                    $scope.loadEvent();
+                }, function (errorCode) {
+                    $scope.eventInputShow = false
+                    alert("Thêm sự kiện lỗi " + errorCode);
+                    console.log(errorCode);
+                });
+        else {
+            $scope.eventInputShow = false
+            alert("Thêm sự kiện lỗi ");
+        }
+    }
+
+    $scope.delEvent = function (eventId) {
+        if (eventId != null)
+            communicate.post(
+                "/removeevent",
+                {
+                    eventId: eventId,
+                },
+                function (responseData) {
+                    $scope.eventInputShow = false
+                    $scope.loadEvent();
+                }, function (errorCode) {
+                    $scope.eventInputShow = false
+                    alert("Xóa sự kiện lỗi " + errorCode);
+                    console.log(errorCode);
+                });
+        else {
+            $scope.eventInputShow = false
+            alert("Xóa sự kiện lỗi ");
+        }
+    }
+
+    $scope.loadFileAtt = function () {
+        $scope.files = [];
+        if (temp.curent_conversation != "")
+            communicate.post(
+                "/getfileattachment",
+                {
+                    cvsId: temp.curent_conversation
+                },
+                function (responseData) {
+                    responseData.forEach(ele => {
+                        $scope.files.push({
+                            url: ele.url,
+                            time: ele.time,
+                            userName: ele.userName,
+                            fileName: ele.originalFileName,
+                        });
+                    })
+                }, function (errorCode) {
+                    console.log(errorCode);
+                });
+        else {
+            alert("Chưa chọn cuộc hội thoại ");
+        }
+    }
+    $scope.loadEvent = function () {
+        if (temp.curent_conversation != "") {
+            $scope.events = [];
+            communicate.post(
+                "/getevent",
+                {
+                    cvsId: temp.curent_conversation,
+                },
+                function (responseData) {
+                    responseData.forEach(ele => {
+                        $scope.events.push({
+                            title: ele.title,
+                            time: ele.actionTime,
+                            userName: ele.userName,
+                            content: ele.content,
+                            piority: getPiority(ele.piority),
+                            id: ele.id
+                        });
+                    })
+
+                }, function (errorCode) {
+                    $scope.eventInputShow = false
+                    alert("Load sự kiện lỗi " + errorCode);
+                    console.log(errorCode);
+                });
+        }
+    }
+    var toDateStr = function (date) {
+        return date.getFullYear() + ""
+            + (date.getMonth() + 1) + ""
+            + date.getDate() + ""
+            + date.getHours() + ""
+            + date.getMinutes() + ""
+            + date.getSeconds() + ""
+    };
+    var getPiority = function (stt) {
+        if (stt == 1)
+            return "info";
+        if (stt == 2)
+            return "warning";
+        if (stt == 3)
+            return "danger";
     }
     var recMsg = function (msg) {
         console.log(msg);
@@ -466,7 +584,9 @@ app.controller('chatCtl', ['socket', '$scope', 'communicate', function (socket, 
         var cvsId = msgObj.to;
         if (cvsId != temp.curent_conversation)
             return;
-        if (msgType == 1 || msgType == 3) {
+        if (msgType == 1 || msgType == 3
+            || msgType == 4|| msgType == 5
+            || msgType == 6 ) {
             var cvsId = msgObj.to;
             var msgElement = {
                 isMe: msgObj.from == userId,

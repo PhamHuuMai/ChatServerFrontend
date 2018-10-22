@@ -28,8 +28,8 @@
             <div class="row">
                 <div id="custom-search-input">
                     <div class="input-group col-md-12">
-                        <input type="text" class="search-query form-control" ng-model="text" placeholder="Tìm kiếm" ng-change="search()"/>
-                        <button class="btn btn-danger" type="button" ng-click="cancel()" >
+                        <input type="text" class="search-query form-control" ng-model="text" placeholder="Tìm kiếm" ng-change="search()" />
+                        <button class="btn btn-danger" type="button" ng-click="cancel()">
                             <span class="glyphicon glyphicon-remove"></span>
                         </button>
                     </div>
@@ -214,7 +214,7 @@
                         <button ng-click="addMember()">
                             <i class="fa fa-plus-square-o" aria-hidden="true"></i> Thêm thành viên </button>
                         <div class="animate-div member_area" ng-show="showContact">
-                            <span class="badge pull-left" style="margin: 10px" ng-show="lstContact.length == 0" >Không có ai cả</span>
+                            <span class="badge pull-left" style="margin: 10px" ng-show="lstContact.length == 0">Không có ai cả</span>
                             <span class="badge pull-left" style="margin: 10px" ng-repeat="x in lstContact" ng-click="add($index)">{{x.userName}}</span>
                         </div>
                         <!--  -->
@@ -236,6 +236,19 @@
                                 <p class="img-rounded" ng-show="x.msgType == 1">{{x.value}}</p>
                                 <p class="img-rounded" ng-show="x.msgType == 3">
                                     <a href="{{x.value}}">{{x.name}} đã gửi một file </a>
+                                </p>
+                                <p class="img-rounded" ng-show="x.msgType == 4">
+                                    <img src="{{x.value}}" alt="{{x.value}}" width="150" height="150">
+                                </p>
+                                <p class="img-rounded" ng-show="x.msgType == 5">
+                                    <video width="300" controls>
+                                        <source src="{{x.value}}">
+                                    </video>
+                                </p>
+                                <p class="img-rounded" ng-show="x.msgType == 6">
+                                    <audio controls>
+                                        <source src="{{x.value}}" >
+                                    </audio>
                                 </p>
                                 <div class="badge chat_time {{!x.isMe ? 'pull-right' :'pull-left' }}">
                                     <strong>{{x.time}}</strong>
@@ -264,19 +277,80 @@
             </div>
         </div>
         <!--end message_section-->
-        <div class="col-md-3 ">
-            <button class="accordion11">Tệp đính kèm</button>
-            <div class="panel">
-                1
+        <div class="col-md-3 " style="min-height: 400px; height: 600px; overflow-y: auto;">
+            <button class="accordion11" ng-click="loadFileAtt()">Tệp đính kèm</button>
+            <div class="panel" style="overflow-y: auto;">
+                <ul>
+                    <li ng-repeat="x in files">
+                        <span class="badged">
+                            <strong>{{x.userName}}</strong> đã gửi vào
+                            <strong>{{x.time}}</strong>
+                            <a href="{{x.url}}">{{x.fileName}}</a>
+                        </span>
+                    </li>
+                </ul>
             </div>
-            <button class="accordion11">Sự kiện</button>
-            <div class="panel">
-                2
+            <button class="accordion11" ng-click="loadEvent()">Sự kiện</button>
+            <div class="panel" style="overflow-y: auto;">
+                <button class="btn" ng-init="eventInputShow = false" ng-click="eventInputShow = !eventInputShow"> Thêm sự kiện </button>
+                <ul>
+                    <li ng-show="eventInputShow">
+                        <div class="form-group">
+                            <strong>Độ quan trọng:
+                                <br>
+                                <label>
+                                    <input type="radio" ng-model="event.piority" name="optradio" value="1" checked>
+                                    <span class="fa fa-star" style="color: yellow;"></span>
+                                </label>
+                                <label>
+                                    <input type="radio" ng-model="event.piority" value="2" name="optradio">
+                                    <span class="fa fa-star" style="color: orange;"></span>
+                                </label>
+                                <label>
+                                    <input type="radio" ng-model="event.piority" value="3" name="optradio">
+                                    <span class="fa fa-star" style="color: red;"></span>
+                                </label>
+                            </strong>
+                            <br>
+                            <strong>Tiêu đề:</strong>
+                            <span>
+                                <input type="text" required ng-model="event.title" />
+                            </span>
+                            <br>
+                            <strong>Nội dung: </strong>
+                            <span>
+                                <textarea class="form-control" required ng-model="event.content" rows="3">ssđsds</textarea>
+                            </span>
+                            <br>
+                            <strong class="badged">Thời gian:
+                                <strong>
+                                    <input type="date" ng-model="event.time" style="line-height:20px;">
+                                </strong>
+                            </strong>
+                            <br>
+                            <button class="btn" ng-click="addEvent()"> Thêm </button>
+                        </div>
+                    </li>
+                    <li ng-repeat="x in events">
+                        <div class="alert alert-{{x.piority}}">
+                            <strong>{{x.title}}</strong>
+                            <button type="button" class="badge" ng-click="delEvent(x.id)">xóa</button>
+                            <p>Nội dung: {{x.content}}</p>
+                            <p class="badged">Thời gian
+                                <strong>{{x.time}}</strong>
+                            </p>
+                            <p>Người tạo:
+                                <strong>{{x.userName}}</strong>
+                            </p>
+
+                        </div>
+                    </li>
+                </ul>
             </div>
-            <button class="accordion11">Voting</button>
+            <!-- <button class="accordion11">Voting</button>
             <div class="panel">
                 3
-            </div>
+            </div> -->
         </div>
     </div>
     <div class="modal fade" id="myModal" role="dialog">
