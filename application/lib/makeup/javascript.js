@@ -28,7 +28,7 @@ function resize(){
   document.getElementById('chat_area').style.height=(document.body.clientHeight*50)/100+'px';
   document.getElementsByClassName('member_list')[0].style.height=(document.body.clientHeight*70)/100+'px';
   document.getElementsByClassName('member_list')[1].style.height=(document.body.clientHeight*70)/100+'px';
-  document.getElementById('attach_section').style.height=(document.body.clientHeight*100)/100+'px'; 
+  document.getElementById('attach_section').style.height=(document.body.clientHeight*95)/100+'px'; 
   console.log(document.body.clientHeight);
 }
 
