@@ -277,11 +277,11 @@
             </div>
         </div>
         <!--end message_section-->
-        <div class="col-md-3 " style="min-height: 400px; height: 600px; overflow-y: auto;">
+        <div class="col-md-3 " id="attach_section" style="min-height: 400px; height: 600px; overflow-y: auto;">
             <button class="accordion11" ng-click="loadFileAtt()">Tệp đính kèm</button>
             <div class="panel" style="overflow-y: auto;">
-                <ul>
-                    <li ng-repeat="x in files">
+                <ul class="list-group">
+                    <li class="list-group-item" ng-repeat="x in files">
                         <span class="badged">
                             <strong>{{x.userName}}</strong> đã gửi vào
                             <strong>{{x.time}}</strong>
@@ -293,8 +293,8 @@
             <button class="accordion11" ng-click="loadEvent()">Sự kiện</button>
             <div class="panel" style="overflow-y: auto;">
                 <button class="btn" ng-init="eventInputShow = false" ng-click="eventInputShow = !eventInputShow"> Thêm sự kiện </button>
-                <ul>
-                    <li ng-show="eventInputShow">
+                <ul class="list-group">
+                    <li class="list-group-item" ng-show="eventInputShow">
                         <div class="form-group">
                             <strong>Độ quan trọng:
                                 <br>
