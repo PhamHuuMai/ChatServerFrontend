@@ -319,7 +319,8 @@ app.controller('chatCtl', ['socket', '$scope', 'communicate', function (socket, 
                 cvsId: temp.curent_conversation
             },
             function (responseData) {
-                $scope.lstContact = responseData
+                $scope.lstContact = responseData;
+                $scope.loadConversation();
             }, function (errorCode) {
                 console.log(errorCode);
             });
