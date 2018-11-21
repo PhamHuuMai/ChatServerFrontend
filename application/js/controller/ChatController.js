@@ -214,6 +214,7 @@ app.controller('chatCtl', ['socket', '$scope', 'communicate', function (socket, 
                 memberId: id
             },
             function (responseData) {
+                $scope.conversations = [];
                 $scope.loadConversation();
             }, function (errorCode) {
                 console.log(errorCode);
@@ -305,6 +306,7 @@ app.controller('chatCtl', ['socket', '$scope', 'communicate', function (socket, 
             },
             function (responseData) {
                 console.log(responseData);
+                $scope.conversations = [];
                 $scope.loadConversation();
             }, function (errorCode) {
                 console.log(errorCode);
@@ -320,6 +322,7 @@ app.controller('chatCtl', ['socket', '$scope', 'communicate', function (socket, 
             },
             function (responseData) {
                 $scope.lstContact = responseData;
+                $scope.conversations = [];
                 $scope.loadConversation();
             }, function (errorCode) {
                 console.log(errorCode);
@@ -421,6 +424,7 @@ app.controller('chatCtl', ['socket', '$scope', 'communicate', function (socket, 
                 cvsId: temp.curent_conversation,
                 name: $scope.conversationName
             }, function (responseData) {
+                $scope.conversations = [];
                 $scope.loadConversation();
                 $scope.edit(true);
                 $scope.cvsNameBk = $scope.conversationName;
