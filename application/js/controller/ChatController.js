@@ -118,12 +118,13 @@ app.controller('chatCtl', ['socket', '$scope', 'communicate', function (socket, 
         $scope.userTab = false;
         $scope.requestTab = false;
         $scope.conversations = [];
-        $scope.apply();
         communicate.post(
             "/getallconversation",
             {},
             function (responseData) {
+                $scope.conversations = [];
                 responseData.forEach(element => {
+                    $scope.conversations = [];
                     $scope.conversations.push({
                         id: element.id,
                         name: element.name,
