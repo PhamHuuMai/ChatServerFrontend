@@ -124,7 +124,6 @@ app.controller('chatCtl', ['socket', '$scope', 'communicate', function (socket, 
             function (responseData) {
                 $scope.conversations = [];
                 responseData.forEach(element => {
-                    $scope.conversations = [];
                     $scope.conversations.push({
                         id: element.id,
                         name: element.name,
