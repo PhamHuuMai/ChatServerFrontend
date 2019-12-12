@@ -1,3 +1,6 @@
 abc
+
 new branch
-study commit
+
+conflic here
+
