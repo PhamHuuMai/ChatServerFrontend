@@ -1,6 +1,6 @@
 abc
-
 new branch
-
 conflic here
-
+new branch
+from child
+conflic here
